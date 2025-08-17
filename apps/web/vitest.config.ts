@@ -6,6 +6,7 @@ import path from 'path';
 export default defineConfig({
   plugins: [react()],
   test: {
+    globals: true,
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
     coverage: {
@@ -27,6 +28,8 @@ export default defineConfig({
       '@shared': path.resolve(__dirname, '../../packages/shared/src'),
       '@ui': path.resolve(__dirname, '../../packages/ui/src'),
       '@config': path.resolve(__dirname, '../../packages/config'),
+      '@instructly/shared': path.resolve(__dirname, '../../packages/shared/src'),
+      '@instructly/ui': path.resolve(__dirname, '../../packages/ui/src'),
     },
   },
 });

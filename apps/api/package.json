@@ -19,6 +19,7 @@
     "@fastify/helmet": "^11.1.1",
     "@fastify/rate-limit": "^8.0.3",
     "@instructly/shared": "*",
+    "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/supabase-js": "^2.38.5",
     "@trpc/client": "^10.45.0",
     "@trpc/server": "^10.45.0",

@@ -84,3 +84,46 @@ export const apiErrorResponseSchema = z.object({
   code: z.string().optional(),
   timestamp: z.date(),
 });
+
+// Authentication validation schemas
+export const signUpSchema = z.object({
+  email: z.string().email('Invalid email address'),
+  password: z.string()
+    .min(8, 'Password must be at least 8 characters')
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+      'Password must contain uppercase, lowercase, number, and special character'
+    ),
+  name: z.string().min(2, 'Name must be at least 2 characters').max(255),
+  organization: z.string().max(255).optional(),
+  role: z.enum(['designer', 'manager', 'admin']).default('designer'),
+});
+
+export const signInSchema = z.object({
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(1, 'Password is required'),
+});
+
+export const resetPasswordSchema = z.object({
+  email: z.string().email('Invalid email address'),
+});
+
+export const updateProfileSchema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters').max(255).optional(),
+  organization: z.string().max(255).optional(),
+  role: z.enum(['designer', 'manager', 'admin']).optional(),
+  preferences: userPreferencesSchema.partial().optional(),
+});
+
+export const authResponseSchema = z.object({
+  user: userSchema,
+  session: z.any().optional(),
+  emailConfirmationRequired: z.boolean().optional(),
+});
+
+export const authStateSchema = z.object({
+  user: userSchema.nullable(),
+  isAuthenticated: z.boolean(),
+  isLoading: z.boolean(),
+  error: z.string().nullable(),
+});

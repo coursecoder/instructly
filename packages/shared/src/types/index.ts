@@ -102,3 +102,53 @@ export interface ApiErrorResponse {
   code?: string;
   timestamp: Date;
 }
+
+// Authentication types
+export interface AuthUser {
+  id: string;
+  email: string;
+  name: string;
+  organization?: string;
+  role: 'designer' | 'manager' | 'admin';
+  preferences: UserPreferences;
+  createdAt: Date;
+  lastLoginAt?: Date;
+  updatedAt: Date;
+}
+
+export interface SignUpData {
+  email: string;
+  password: string;
+  name: string;
+  organization?: string;
+  role?: 'designer' | 'manager' | 'admin';
+}
+
+export interface SignInData {
+  email: string;
+  password: string;
+}
+
+export interface ResetPasswordData {
+  email: string;
+}
+
+export interface UpdateProfileData {
+  name?: string;
+  organization?: string;
+  role?: 'designer' | 'manager' | 'admin';
+  preferences?: Partial<UserPreferences>;
+}
+
+export interface AuthResponse {
+  user: AuthUser;
+  session?: any;
+  emailConfirmationRequired?: boolean;
+}
+
+export interface AuthState {
+  user: AuthUser | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  error: string | null;
+}
