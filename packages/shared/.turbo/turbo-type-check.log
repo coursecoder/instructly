@@ -1,0 +1,4 @@
+
+> @instructly/shared@0.1.0 type-check
+> tsc --noEmit
+
