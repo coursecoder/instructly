@@ -122,5 +122,65 @@ export const authRouter = router({
           cause: error
         });
       }
+    }),
+
+  // Resend email verification
+  resendVerification: publicProcedure
+    .input(z.object({
+      email: z.string().email()
+    }))
+    .mutation(async ({ input, ctx }) => {
+      try {
+        const result = await ctx.authService.resendEmailVerification(input.email);
+        return result;
+      } catch (error) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: error instanceof Error ? error.message : 'Failed to resend verification email',
+          cause: error
+        });
+      }
+    }),
+
+  // Export user data (GDPR compliance)
+  exportData: protectedProcedure
+    .mutation(async ({ ctx }) => {
+      try {
+        const result = await ctx.authService.exportUserData(ctx.user.id);
+        return result;
+      } catch (error) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error instanceof Error ? error.message : 'Failed to export user data',
+          cause: error
+        });
+      }
+    }),
+
+  // Delete user account (GDPR Right to be Forgotten)
+  deleteAccount: protectedProcedure
+    .input(z.object({
+      confirmEmail: z.string().email()
+    }))
+    .mutation(async ({ input, ctx }) => {
+      try {
+        // Get current user to verify email
+        const currentUser = await ctx.authService.getUserById(ctx.user.id);
+        if (input.confirmEmail !== currentUser.email) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Email confirmation does not match your account email'
+          });
+        }
+
+        const result = await ctx.authService.deleteUserAccount(ctx.user.id);
+        return result;
+      } catch (error) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: error instanceof Error ? error.message : 'Failed to delete user account',
+          cause: error
+        });
+      }
     })
 });

@@ -5,7 +5,7 @@ process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://test.supabase.co';
 process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-service-key';
 process.env.NEXT_PUBLIC_SITE_URL = 'https://test.com';
 
-import { AuthService } from '../../src/services/auth';
+import { AuthService, resetAuthService } from '../../src/services/auth';
 
 // Mock Supabase
 const mockChain = {
@@ -13,7 +13,19 @@ const mockChain = {
   insert: vi.fn().mockReturnThis(),
   update: vi.fn().mockReturnThis(),
   eq: vi.fn().mockReturnThis(),
-  single: vi.fn()
+  single: vi.fn().mockResolvedValue({ 
+    data: { 
+      id: 'user-123', 
+      email: 'user@example.com', 
+      name: 'Test User', 
+      role: 'designer',
+      organization: 'Test Org',
+      preferences: {},
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    }, 
+    error: null 
+  })
 };
 
 const mockSupabase = {
@@ -23,11 +35,13 @@ const mockSupabase = {
     signOut: vi.fn(),
     resetPasswordForEmail: vi.fn(),
     verifyOtp: vi.fn(),
+    resend: vi.fn(),
     admin: {
       deleteUser: vi.fn()
     }
   },
-  from: vi.fn(() => mockChain)
+  from: vi.fn(() => mockChain),
+  rpc: vi.fn().mockResolvedValue({ data: true, error: null })
 };
 
 vi.mock('@supabase/supabase-js', () => ({
@@ -39,6 +53,7 @@ describe('AuthService', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    resetAuthService(); // Reset singleton for each test
   });
 
   describe('signUp', () => {
@@ -46,8 +61,8 @@ describe('AuthService', () => {
       const authService = new AuthService();
       
       const signUpData = {
-        email: 'test@example.com',
-        password: 'TestPass123!',
+        email: 'user@example.com',
+        password: 'SecurePass$2024',
         name: 'Test User',
         organization: 'Test Org',
         role: 'designer' as const
@@ -55,12 +70,12 @@ describe('AuthService', () => {
 
       const mockAuthUser = {
         id: 'user-123',
-        email: 'test@example.com'
+        email: 'user@example.com'
       };
 
       const mockUserProfile = {
         id: 'user-123',
-        email: 'test@example.com',
+        email: 'user@example.com',
         name: 'Test User',
         organization: 'Test Org',
         role: 'designer',
@@ -117,7 +132,7 @@ describe('AuthService', () => {
       
       const signUpData = {
         email: 'existing@example.com',
-        password: 'TestPass123!',
+        password: 'SecurePass123!',
         name: 'Test User',
         role: 'designer' as const
       };
@@ -137,7 +152,7 @@ describe('AuthService', () => {
       const authService = new AuthService();
       
       const signUpData = {
-        email: 'test@example.com',
+        email: 'user@example.com',
         password: 'weak',
         name: 'Test User',
         role: 'designer' as const
@@ -154,8 +169,8 @@ describe('AuthService', () => {
       const authService = new AuthService();
       
       const signInData = {
-        email: 'test@example.com',
-        password: 'TestPass123!'
+        email: 'user@example.com',
+        password: 'SecurePass123!'
       };
 
       const mockSession = {
@@ -165,7 +180,7 @@ describe('AuthService', () => {
 
       const mockUserProfile = {
         id: 'user-123',
-        email: 'test@example.com',
+        email: 'user@example.com',
         name: 'Test User',
         role: 'designer'
       };
@@ -202,7 +217,7 @@ describe('AuthService', () => {
       const authService = new AuthService();
       
       const signInData = {
-        email: 'test@example.com',
+        email: 'user@example.com',
         password: 'wrong-password'
       };
 
@@ -220,7 +235,7 @@ describe('AuthService', () => {
   describe('resetPassword', () => {
     it('should send password reset email', async () => {
       const authService = new AuthService();
-      const resetData = { email: 'test@example.com' };
+      const resetData = { email: 'user@example.com' };
 
       mockSupabase.auth.resetPasswordForEmail.mockResolvedValueOnce({
         error: null

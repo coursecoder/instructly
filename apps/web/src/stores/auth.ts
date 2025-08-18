@@ -10,21 +10,31 @@ import type {
   AuthResponse 
 } from '@instructly/shared/types';
 
+// Session timeout configuration
+const INACTIVITY_TIMEOUT = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
+const WARNING_TIMEOUT = 10 * 60 * 1000; // 10 minutes warning before logout
+
 interface AuthState {
   user: AuthUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
+  lastActivity: number | null;
+  sessionTimeoutId: NodeJS.Timeout | null;
   
   // Actions
   signUp: (data: SignUpData) => Promise<AuthResponse>;
   signIn: (data: SignInData) => Promise<void>;
+  login: (data: SignInData) => Promise<void>; // Alias for signIn for callback page
   signOut: () => Promise<void>;
   resetPassword: (data: ResetPasswordData) => Promise<void>;
   updateProfile: (data: UpdateProfileData) => Promise<void>;
   getCurrentUser: () => Promise<void>;
   clearError: () => void;
   setLoading: (loading: boolean) => void;
+  updateActivity: () => void;
+  setupSessionTimeout: () => void;
+  clearSessionTimeout: () => void;
 }
 
 // Create a singleton tRPC client for use in the store
@@ -57,6 +67,8 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
       isAuthenticated: false,
       isLoading: false,
       error: null,
+      lastActivity: null,
+      sessionTimeoutId: null,
 
       setLoading: (loading: boolean) => {
         set({ isLoading: loading });
@@ -131,7 +143,11 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
             isAuthenticated: true,
             isLoading: false,
             error: null,
+            lastActivity: Date.now(),
           });
+
+          // Set up session timeout after successful sign in
+          get().setupSessionTimeout();
         } catch (error) {
           const errorMessage = error instanceof Error ? error.message : 'Sign in failed';
           set({ isLoading: false, error: errorMessage });
@@ -150,6 +166,9 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
           // Log error but don't prevent logout
           console.error('Logout API call failed:', error);
         } finally {
+          // Clear session timeout
+          get().clearSessionTimeout();
+          
           // Clear local state regardless of API call success
           localStorage.removeItem('auth-token');
           set({
@@ -157,6 +176,8 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
             isAuthenticated: false,
             isLoading: false,
             error: null,
+            lastActivity: null,
+            sessionTimeoutId: null,
           });
         }
       },
@@ -227,7 +248,11 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
             isAuthenticated: true,
             isLoading: false,
             error: null,
+            lastActivity: Date.now(),
           });
+
+          // Set up session timeout for existing session
+          get().setupSessionTimeout();
         } catch (error) {
           // If token is invalid, clear it
           localStorage.removeItem('auth-token');
@@ -237,6 +262,47 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
             isLoading: false,
             error: null,
           });
+        }
+      },
+
+      // Alias for signIn to maintain compatibility with callback page
+      login: async (data: SignInData): Promise<void> => {
+        return get().signIn(data);
+      },
+
+      updateActivity: () => {
+        const now = Date.now();
+        set({ lastActivity: now });
+        
+        // Reset the timeout
+        const state = get();
+        if (state.isAuthenticated) {
+          state.clearSessionTimeout();
+          state.setupSessionTimeout();
+        }
+      },
+
+      setupSessionTimeout: () => {
+        const state = get();
+        if (state.sessionTimeoutId) {
+          clearTimeout(state.sessionTimeoutId);
+        }
+
+        // Set up automatic logout after inactivity period
+        const timeoutId = setTimeout(() => {
+          console.log('Session timed out due to inactivity');
+          const currentState = get();
+          currentState.signOut();
+        }, INACTIVITY_TIMEOUT);
+
+        set({ sessionTimeoutId: timeoutId });
+      },
+
+      clearSessionTimeout: () => {
+        const state = get();
+        if (state.sessionTimeoutId) {
+          clearTimeout(state.sessionTimeoutId);
+          set({ sessionTimeoutId: null });
         }
       },
     }));

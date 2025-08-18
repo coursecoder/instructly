@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { authService } from '../../services/auth';
+import { getAuthService } from '../../services/auth';
 import { signUpSchema } from '../../../../../packages/shared/src/schemas';
 
 export const runtime = 'edge';
@@ -16,7 +16,7 @@ export default async function handler(req: NextRequest) {
     const body = await req.json();
     const validatedData = signUpSchema.parse(body);
 
-    const result = await authService.signUp(validatedData);
+    const result = await getAuthService().signUp(validatedData);
 
     return NextResponse.json({
       success: true,

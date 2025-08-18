@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
 import { createTRPCReact } from '@trpc/react-query';
 import type { AppRouter } from '../../../api/src/trpc/routers';
+import SessionTimeout from './SessionTimeout';
 
 // Create tRPC React client
 const trpcReact = createTRPCReact<AppRouter>();
@@ -43,6 +44,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <trpcReact.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
+        <SessionTimeout />
         {children}
       </QueryClientProvider>
     </trpcReact.Provider>

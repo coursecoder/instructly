@@ -1,7 +1,7 @@
 import { initTRPC, TRPCError } from '@trpc/server';
 import { CreateNextContextOptions } from '@trpc/server/adapters/next';
 import { NextRequest } from 'next/server';
-import { authService } from '../services/auth';
+import { getAuthService } from '../services/auth';
 import { z } from 'zod';
 
 // Create context for tRPC procedures
@@ -31,7 +31,7 @@ export async function createTRPCContext({ req }: CreateNextContextOptions) {
     req,
     user,
     session,
-    authService: authService!
+    authService: getAuthService()
   };
 }
 

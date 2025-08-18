@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { authService } from '../../services/auth';
+import { getAuthService } from '../../services/auth';
 import { resetPasswordSchema } from '../../../../../packages/shared/src/schemas';
 
 export const runtime = 'edge';
@@ -16,7 +16,7 @@ export default async function handler(req: NextRequest) {
     const body = await req.json();
     const validatedData = resetPasswordSchema.parse(body);
 
-    const result = await authService.resetPassword(validatedData);
+    const result = await getAuthService().resetPassword(validatedData);
 
     return NextResponse.json({
       success: true,

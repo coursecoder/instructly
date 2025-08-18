@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { authMiddleware } from '../../middleware/auth';
-import { authService } from '../../services/auth';
+import { getAuthService } from '../../services/auth';
 
 export const runtime = 'edge';
 
@@ -32,7 +32,7 @@ export default async function handler(req: NextRequest) {
     }
 
     const accessToken = authHeader.substring(7);
-    const result = await authService.signOut(accessToken);
+    const result = await getAuthService().signOut(accessToken);
 
     return NextResponse.json({
       success: true,
