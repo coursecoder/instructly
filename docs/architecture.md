@@ -84,7 +84,7 @@ graph TB
 
 **Primary Model:** GPT-5 at $1.25/$10 per million tokens
 - Complex lesson plan generation
-- Clark & Mayer framework analysis
+- instructional design framework analysis
 - Professional documentation creation
 - Accessibility content generation
 
@@ -103,7 +103,7 @@ graph TB
 - Significantly improved content generation quality
 - Better adherence to instructional design frameworks
 - Reduced hallucinations critical for professional credibility
-- Enhanced instruction following for consistent Clark & Mayer classification
+- Enhanced instruction following for consistent instructional design framework classification
 
 This updated AI strategy improves both cost economics and content quality, strengthening our competitive position while maintaining the <30% AI cost target.
 
@@ -251,11 +251,11 @@ interface Topic {
   id: string;
   content: string;
   classification: 'facts' | 'concepts' | 'processes' | 'procedures' | 'principles';
-  aiAnalysis: ClarkMayerAnalysis;
+  aiAnalysis: InstructionalDesignAnalysis;
   generatedAt: Date;
 }
 
-interface ClarkMayerAnalysis {
+interface InstructionalDesignAnalysis {
   contentType: string;
   rationale: string;
   recommendedMethods: string[];
@@ -378,7 +378,7 @@ export const appRouter = router({
     analyzeTopics: protectedProcedure
       .input(z.object({
         topics: z.array(z.string()).min(1).max(10),
-        analysisType: z.enum(['clark_mayer', 'bloom_taxonomy', 'instructional_methods']).default('clark_mayer')
+        analysisType: z.enum(['instructional_design', 'bloom_taxonomy', 'instructional_methods']).default('instructional_design')
       }))
       .mutation(async ({ input, ctx }) => {
         // Route to GPT-5 or GPT-3.5 based on complexity
@@ -423,10 +423,10 @@ Based on the architectural patterns, tech stack, and data models, here are the m
 
 ### AI Processing Engine
 
-**Responsibility:** Handles all AI interactions including Clark & Mayer analysis, content generation, and intelligent model routing for cost optimization with detailed cost tracking and budget controls.
+**Responsibility:** Handles all AI interactions including instructional design framework analysis, content generation, and intelligent model routing for cost optimization with detailed cost tracking and budget controls.
 
 **Key Interfaces:**
-- `analyzeContent(content: string, analysisType: string): ClarkMayerAnalysis`
+- `analyzeContent(content: string, analysisType: string): InstructionalDesignAnalysis`
 - `generateLessonContent(lesson: Lesson, options: GenerationOptions): LessonContent`
 - `routeToOptimalModel(complexity: string, tokenEstimate: number): ModelChoice`
 - `trackCostUsage(userId: string, operation: string, cost: number): CostUsageResult`
@@ -594,7 +594,7 @@ sequenceDiagram
     
     User->>UI: Add topic content
     UI->>API: ai.analyzeTopics()
-    API->>AI: Classify using Clark & Mayer
+    API->>AI: Classify using instructional design framework
     AI->>AI: Route to GPT-5 or GPT-3.5
     AI->>API: Return classification + rationale
     API->>DB: Store analysis results
@@ -810,7 +810,7 @@ import React from 'react';
 import { cn } from '@/utils/cn';
 
 interface AIClassificationPanelProps {
-  analysis: ClarkMayerAnalysis;
+  analysis: InstructionalDesignAnalysis;
   onAccept: () => void;
   onModify: () => void;
   isLoading?: boolean;
@@ -848,7 +848,7 @@ export const AIClassificationPanel: React.FC<AIClassificationPanelProps> = ({
           {analysis.contentType}
         </div>
         <p className="text-gray-600 text-sm">
-          Based on Clark & Mayer instructional design framework
+          Based on established instructional design frameworks
         </p>
       </div>
 
@@ -1039,7 +1039,7 @@ import { authMiddleware } from '@/middleware/auth';
 
 const analyzeRequestSchema = z.object({
   topics: z.array(z.string()).min(1).max(10),
-  analysisType: z.enum(['clark_mayer', 'bloom_taxonomy']).default('clark_mayer')
+  analysisType: z.enum(['instructional_design', 'bloom_taxonomy']).default('instructional_design')
 });
 
 export const runtime = 'edge';
@@ -1586,7 +1586,7 @@ describe('/api/ai/analyze', () => {
       .post('/api/ai/analyze')
       .send({
         topics: ['Learning about databases'],
-        analysisType: 'clark_mayer'
+        analysisType: 'instructional_design'
       })
       .expect(200);
 

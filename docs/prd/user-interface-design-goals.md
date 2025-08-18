@@ -8,12 +8,12 @@ Professional, enterprise-grade interface that positions instructional designers 
 
 - **Guided Workflow Approach:** Step-by-step wizard-style interface for lesson creation that demonstrates professional methodology while reducing cognitive load
 - **Dashboard-Centric Design:** Central hub showing project status, compliance scores, and professional metrics that can be shared with stakeholders
-- **Evidence-Based Transparency:** Every AI recommendation includes visible rationale and Clark & Mayer framework justification to build user confidence and stakeholder credibility
+- **Evidence-Based Transparency:** Every AI recommendation includes visible rationale and instructional design framework justification to build user confidence and stakeholder credibility
 
 ## Core Screens and Views
 
 - Project Dashboard (overview of all lesson plans, compliance status, recent activity)
-- Topic Analysis Input & Results (Clark & Mayer classification with detailed explanations)
+- Topic Analysis Input & Results (instructional design framework classification with detailed explanations)
 - Lesson Plan Builder (structured creation interface with real-time accessibility checking)
 - Professional Documentation Viewer (generated ID Chart with methodology explanations)
 - Stakeholder Sharing Interface (clean, presentation-ready views of completed work)
@@ -25,7 +25,7 @@ Enterprise accessibility compliance is a core business requirement, not just a n
 
 ## Branding
 
-Professional, credible, evidence-based aesthetic that elevates instructional design as a legitimate business discipline. The Instructly brand combines the authority of "instruct" with modern SaaS positioning through the "-ly" suffix, creating a name that works in enterprise boardrooms while maintaining tech-forward appeal. Visual design should emphasize data visualization elements, clean typography, and subtle use of Clark & Mayer framework colors to reinforce pedagogical credibility.
+Professional, credible, evidence-based aesthetic that elevates instructional design as a legitimate business discipline. The Instructly brand combines the authority of "instruct" with modern SaaS positioning through the "-ly" suffix, creating a name that works in enterprise boardrooms while maintaining tech-forward appeal. Visual design should emphasize data visualization elements, clean typography, and subtle use of instructional design framework colors to reinforce pedagogical credibility.
 
 ## Target Device and Platforms: Web Responsive
 

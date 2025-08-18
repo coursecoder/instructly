@@ -97,7 +97,7 @@ describe('/api/ai/analyze', () => {
       .post('/api/ai/analyze')
       .send({
         topics: ['Learning about databases'],
-        analysisType: 'clark_mayer'
+        analysisType: 'instructional_design'
       })
       .expect(200);
 

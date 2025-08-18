@@ -1,6 +1,6 @@
 # Epic 2: AI-Powered Lesson Generation Engine
 
-Build comprehensive lesson plan generation with Clark & Mayer framework integration, creating complete instructor-led and self-paced outputs with professional documentation. This epic delivers the core value proposition by transforming AI topic analysis into complete, professional lesson plans that eliminate "blank page syndrome."
+Build comprehensive lesson plan generation with instructional design framework integration, creating complete instructor-led and self-paced outputs with professional documentation. This epic delivers the core value proposition by transforming AI topic analysis into complete, professional lesson plans that eliminate "blank page syndrome."
 
 ## Story 2.1: Comprehensive Lesson Plan Generation
 
@@ -11,7 +11,7 @@ so that I can quickly create professional, evidence-based learning experiences.
 **Acceptance Criteria:**
 1. Generate lesson plans from existing topic classifications within lessons
 2. Create separate outputs for instructor-led and self-paced eLearning formats
-3. Include learning objectives aligned with Clark & Mayer content type
+3. Include learning objectives aligned with instructional design framework content type
 4. Generate appropriate assessment strategies based on content classification
 5. Provide estimated timing and pacing recommendations for each lesson component
 6. Include materials list and preparation requirements
@@ -41,7 +41,7 @@ I want automatically generated learning objectives and aligned assessments,
 so that I can ensure pedagogically sound lesson structure and measurable outcomes.
 
 **Acceptance Criteria:**
-1. Generate SMART learning objectives based on Clark & Mayer content type
+1. Generate SMART learning objectives based on instructional design framework content type
 2. Align objectives with appropriate Bloom's taxonomy levels for content type
 3. Create formative assessment options throughout lesson progression
 4. Generate summative assessment suggestions with multiple formats (quiz, practical application, project-based)

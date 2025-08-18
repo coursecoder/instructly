@@ -55,7 +55,7 @@ import React from 'react';
 import { cn } from '@/utils/cn';
 
 interface AIClassificationPanelProps {
-  analysis: ClarkMayerAnalysis;
+  analysis: InstructionalDesignAnalysis;
   onAccept: () => void;
   onModify: () => void;
   isLoading?: boolean;
@@ -93,7 +93,7 @@ export const AIClassificationPanel: React.FC<AIClassificationPanelProps> = ({
           {analysis.contentType}
         </div>
         <p className="text-gray-600 text-sm">
-          Based on Clark & Mayer instructional design framework
+          Based on established instructional design frameworks
         </p>
       </div>
 

@@ -1,6 +1,6 @@
 # Epic 1: Foundation & Core Infrastructure
 
-Establish foundational project infrastructure with user authentication and basic project management while delivering immediate value through AI-powered topic analysis using Clark & Mayer framework. This epic provides the technical foundation for all subsequent features while giving users their first experience with the platform's core AI capabilities.
+Establish foundational project infrastructure with user authentication and basic project management while delivering immediate value through AI-powered topic analysis using instructional design framework. This epic provides the technical foundation for all subsequent features while giving users their first experience with the platform's core AI capabilities.
 
 ## Story 1.1: Project Setup & Health Monitoring
 
@@ -33,13 +33,13 @@ so that I can access personalized lesson planning tools.
 ## Story 1.3: AI Topic Analysis Engine (MVP)
 
 As an instructional designer,
-I want to input a topic and receive Clark & Mayer framework classification,
+I want to input a topic and receive instructional design framework classification,
 so that I have evidence-based starting points for lesson planning.
 
 **Acceptance Criteria:**
 1. Text input interface for topic submission
 2. Integration with OpenAI GPT-4 API for content analysis
-3. Clark & Mayer classification output (facts, concepts, processes, procedures, principles)
+3. Instructional design framework classification output (facts, concepts, processes, procedures, principles)
 4. Detailed rationale explaining classification decision and methodology
 5. Recommended instructional methods based on content type
 6. Response caching to optimize costs and performance

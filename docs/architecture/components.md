@@ -4,10 +4,10 @@ Based on the architectural patterns, tech stack, and data models, here are the m
 
 ## AI Processing Engine
 
-**Responsibility:** Handles all AI interactions including Clark & Mayer analysis, content generation, and intelligent model routing for cost optimization with detailed cost tracking and budget controls.
+**Responsibility:** Handles all AI interactions including instructional design framework analysis, content generation, and intelligent model routing for cost optimization with detailed cost tracking and budget controls.
 
 **Key Interfaces:**
-- `analyzeContent(content: string, analysisType: string): ClarkMayerAnalysis`
+- `analyzeContent(content: string, analysisType: string): InstructionalDesignAnalysis`
 - `generateLessonContent(lesson: Lesson, options: GenerationOptions): LessonContent`
 - `routeToOptimalModel(complexity: string, tokenEstimate: number): ModelChoice`
 - `trackCostUsage(userId: string, operation: string, cost: number): CostUsageResult`

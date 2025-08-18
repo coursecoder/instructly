@@ -10,8 +10,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: 'Instructly - AI-Powered Instructional Design Platform',
-  description: 'Transform instructional design from craft-based practice to evidence-based profession with AI-powered Clark & Mayer framework classification.',
-  keywords: 'instructional design, AI, Clark & Mayer, lesson planning, accessibility, WCAG',
+  description: 'Transform instructional design from craft-based practice to evidence-based profession with AI-powered instructional design framework classification.',
+  keywords: 'instructional design, AI, instructional frameworks, lesson planning, accessibility, WCAG',
   authors: [{ name: 'Instructly Team' }],
   robots: 'index, follow',
   viewport: 'width=device-width, initial-scale=1',

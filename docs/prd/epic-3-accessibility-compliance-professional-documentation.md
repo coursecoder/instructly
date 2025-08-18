@@ -42,7 +42,7 @@ so that I can demonstrate professional expertise and provide accountability for 
 
 **Acceptance Criteria:**
 1. Generate comprehensive ID Chart documenting every design decision
-2. Include Clark & Mayer framework rationale for each content classification
+2. Include instructional design framework rationale for each content classification
 3. Document methodology choices with evidence-based justifications
 4. Track decision history and rationale changes throughout lesson development
 5. Include peer review capability for professional validation

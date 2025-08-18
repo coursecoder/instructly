@@ -9,7 +9,7 @@
 ## App Concept Summary
 An application that:
 - Allows entry of lesson topics
-- Analyzes topics using Clark & Mayer's eLearning framework
+- Analyzes topics using established instructional design frameworks
 - Classifies content type with explanations
 - Generates AI-powered instructional methods, activities, and assessments
 - Creates separate outputs for instructor-led and self-paced eLearning
@@ -86,7 +86,7 @@ Sarah needs to prove her worth to stakeholders who are product experts but lack 
 **🔥 BREAKTHROUGH: Screenshot Input Method**
 - **Replace text topic input with screenshot analysis** - Users upload images of existing course materials, slide decks, documentation, or training content
 - **AI visual analysis capability** - App analyzes visual content, text, diagrams, and layout to understand the learning topic and current approach
-- **Instant improvement recommendations** - Compare existing materials against Clark & Mayer principles and suggest enhancements
+- **Instant improvement recommendations** - Compare existing materials against instructional design principles and suggest enhancements
 - **Legacy content transformation** - Take outdated or poorly designed materials and regenerate them with modern instructional design principles
 
 **Additional Input Substitutions Brainstormed:**
@@ -194,7 +194,7 @@ Sales enablement budgets are often 10x larger than general training budgets. Sal
 **Elements to KEEP (User Validation):**
 - **Manual topic input capability** - Essential for greenfield content creation when no existing materials exist
 - **Multiple output formats** - Critical for content reusability across instructor-led and self-paced contexts
-- **Clark & Mayer classification** - Provides consistency and pedagogical foundation for topic-appropriate content generation
+- **Instructional design framework classification** - Provides consistency and pedagogical foundation for topic-appropriate content generation
 
 **Strategic Design Decision:**
 Eliminate features that add complexity without proportional user value. Focus on core workflow: Topic Input → AI Analysis & Classification → Multiple Format Generation. This creates a streamlined, fast user experience while maintaining instructional design rigor.
@@ -463,7 +463,7 @@ Combine the **medical chart documentation** approach with **software engineering
 ### Phased Implementation Strategy
 
 **PHASE 0: START RIGHT NOW (0-3 months)**
-- **Core MVP Development:** Basic topic input → Clark & Mayer classification → lesson plan generation
+- **Core MVP Development:** Basic topic input → instructional design framework classification → lesson plan generation
 - **Market Validation:** Interview potential users, validate core concept
 - **Technical Foundation:** Set up AI infrastructure with cost-effective token usage
 - **Sales Enablement Research:** Identify specific sales training pain points

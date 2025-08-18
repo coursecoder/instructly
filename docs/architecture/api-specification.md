@@ -34,7 +34,7 @@ export const appRouter = router({
     analyzeTopics: protectedProcedure
       .input(z.object({
         topics: z.array(z.string()).min(1).max(10),
-        analysisType: z.enum(['clark_mayer', 'bloom_taxonomy', 'instructional_methods']).default('clark_mayer')
+        analysisType: z.enum(['instructional_design', 'bloom_taxonomy', 'instructional_methods']).default('instructional_design')
       }))
       .mutation(async ({ input, ctx }) => {
         // Route to GPT-5 or GPT-3.5 based on complexity

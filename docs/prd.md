@@ -4,7 +4,7 @@
 
 ### Goals
 
-- Transform instructional design from craft-based practice to evidence-based profession with AI-powered Clark & Mayer framework classification
+- Transform instructional design from craft-based practice to evidence-based profession with AI-powered instructional design framework classification
 - Eliminate "blank page syndrome" by providing research-backed starting points that reduce lesson planning time from 40-60% research to <20%
 - Establish professional credibility for instructional designers through AI-generated diagrams, activities, and automated documentation systems
 - Ensure enterprise accessibility compliance (Section 508/WCAG 2.1) with 90%+ automated accuracy, eliminating legal risk and manual remediation
@@ -15,7 +15,7 @@
 
 Corporate instructional designers face a triple challenge that undermines professional effectiveness: rapid topic mastery pressure (2-3 week deadlines for complex technical content), blank page syndrome requiring extensive manual research, and a professional credibility gap with stakeholders who possess superior subject matter expertise. This results in 40-60% of project time being wasted on basic research rather than applying instructional design expertise, leading to superficial content that fails technical audiences and positioning IDs as "PowerPoint creators" rather than learning experience architects.
 
-The convergence of AI adoption acceleration (100M+ ChatGPT users), mandatory accessibility compliance pressure, and a 15+ year professional recognition crisis creates urgent market opportunity. Existing solutions fall short: generic AI tools lack pedagogical frameworks, traditional ID tools provide no research foundation, and manual processes cannot scale with enterprise demands. The proposed AI-powered platform addresses this by combining intelligent topic analysis using Clark & Mayer's framework, professional credibility generation through sophisticated outputs, and built-in compliance automation—transforming instructional design into a legitimate, evidence-based profession similar to how standardized tools legitimized accounting.
+The convergence of AI adoption acceleration (100M+ ChatGPT users), mandatory accessibility compliance pressure, and a 15+ year professional recognition crisis creates urgent market opportunity. Existing solutions fall short: generic AI tools lack pedagogical frameworks, traditional ID tools provide no research foundation, and manual processes cannot scale with enterprise demands. The proposed AI-powered platform addresses this by combining intelligent topic analysis using established instructional design frameworks, professional credibility generation through sophisticated outputs, and built-in compliance automation—transforming instructional design into a legitimate, evidence-based profession similar to how standardized tools legitimized accounting.
 
 ### Change Log
 
@@ -28,7 +28,7 @@ The convergence of AI adoption acceleration (100M+ ChatGPT users), mandatory acc
 
 ### Functional
 
-1. FR1: The system shall analyze topic inputs using Clark & Mayer's eLearning framework to classify content types (facts, concepts, processes, procedures, principles) and generate appropriate instructional methods
+1. FR1: The system shall analyze topic inputs using established instructional design frameworks to classify content types (facts, concepts, processes, procedures, principles) and generate appropriate instructional methods
 2. FR2: The system shall generate comprehensive lesson plans with separate outputs for instructor-led and self-paced eLearning formats, including learning objectives, activities, and assessment suggestions
 3. FR3: The system shall create engaging, hands-on activities specifically designed for technical content mastery, including step-by-step visual exercises and progressive learning sequences
 4. FR4: The system shall generate "Instructional Design Chart" documentation that records design decisions, methodology choices, and evidence supporting each instructional approach
@@ -58,12 +58,12 @@ Professional, enterprise-grade interface that positions instructional designers 
 
 - **Guided Workflow Approach:** Step-by-step wizard-style interface for lesson creation that demonstrates professional methodology while reducing cognitive load
 - **Dashboard-Centric Design:** Central hub showing project status, compliance scores, and professional metrics that can be shared with stakeholders
-- **Evidence-Based Transparency:** Every AI recommendation includes visible rationale and Clark & Mayer framework justification to build user confidence and stakeholder credibility
+- **Evidence-Based Transparency:** Every AI recommendation includes visible rationale and instructional design framework justification to build user confidence and stakeholder credibility
 
 ### Core Screens and Views
 
 - Project Dashboard (overview of all lesson plans, compliance status, recent activity)
-- Topic Analysis Input & Results (Clark & Mayer classification with detailed explanations)
+- Topic Analysis Input & Results (instructional design framework classification with detailed explanations)
 - Lesson Plan Builder (structured creation interface with real-time accessibility checking)
 - Professional Documentation Viewer (generated ID Chart with methodology explanations)
 - Stakeholder Sharing Interface (clean, presentation-ready views of completed work)
@@ -75,7 +75,7 @@ Enterprise accessibility compliance is a core business requirement, not just a n
 
 ### Branding
 
-Professional, credible, evidence-based aesthetic that elevates instructional design as a legitimate business discipline. The Instructly brand combines the authority of "instruct" with modern SaaS positioning through the "-ly" suffix, creating a name that works in enterprise boardrooms while maintaining tech-forward appeal. Visual design should emphasize data visualization elements, clean typography, and subtle use of Clark & Mayer framework colors to reinforce pedagogical credibility.
+Professional, credible, evidence-based aesthetic that elevates instructional design as a legitimate business discipline. The Instructly brand combines the authority of "instruct" with modern SaaS positioning through the "-ly" suffix, creating a name that works in enterprise boardrooms while maintaining tech-forward appeal. Visual design should emphasize data visualization elements, clean typography, and subtle use of instructional design framework colors to reinforce pedagogical credibility.
 
 ### Target Device and Platforms: Web Responsive
 
@@ -110,7 +110,7 @@ Unit + Integration - Focus on unit tests for AI prompt engineering and integrati
 
 - **Epic 1: Foundation & Core Infrastructure:** Establish project setup, authentication, basic user management, and health monitoring while delivering initial AI topic analysis functionality for immediate user value demonstration.
 
-- **Epic 2: AI-Powered Lesson Generation Engine:** Build comprehensive lesson plan generation with Clark & Mayer framework integration, creating complete instructor-led and self-paced outputs with professional documentation.
+- **Epic 2: AI-Powered Lesson Generation Engine:** Build comprehensive lesson plan generation with instructional design framework integration, creating complete instructor-led and self-paced outputs with professional documentation.
 
 - **Epic 3: Accessibility Compliance & Professional Documentation:** Implement automated WCAG 2.1 compliance checking, audit report generation, and Instructional Design Chart creation for enterprise credibility and legal requirements.
 
@@ -118,7 +118,7 @@ Unit + Integration - Focus on unit tests for AI prompt engineering and integrati
 
 ## Epic 1: Foundation & Core Infrastructure
 
-Establish foundational project infrastructure with user authentication and basic project management while delivering immediate value through AI-powered topic analysis using Clark & Mayer framework. This epic provides the technical foundation for all subsequent features while giving users their first experience with the platform's core AI capabilities.
+Establish foundational project infrastructure with user authentication and basic project management while delivering immediate value through AI-powered topic analysis using instructional design framework. This epic provides the technical foundation for all subsequent features while giving users their first experience with the platform's core AI capabilities.
 
 ### Story 1.1: Project Setup & Health Monitoring
 
@@ -151,13 +151,13 @@ so that I can access personalized lesson planning tools.
 ### Story 1.3: AI Topic Analysis Engine (MVP)
 
 As an instructional designer,
-I want to input a topic and receive Clark & Mayer framework classification,
+I want to input a topic and receive instructional design framework classification,
 so that I have evidence-based starting points for lesson planning.
 
 **Acceptance Criteria:**
 1. Text input interface for topic submission
 2. Integration with OpenAI GPT-4 API for content analysis
-3. Clark & Mayer classification output (facts, concepts, processes, procedures, principles)
+3. Instructional design framework classification output (facts, concepts, processes, procedures, principles)
 4. Detailed rationale explaining classification decision and methodology
 5. Recommended instructional methods based on content type
 6. Response caching to optimize costs and performance
@@ -211,7 +211,7 @@ so that I can efficiently organize complex training programs without individual 
 
 ## Epic 2: AI-Powered Lesson Generation Engine
 
-Build comprehensive lesson plan generation with Clark & Mayer framework integration, creating complete instructor-led and self-paced outputs with professional documentation. This epic delivers the core value proposition by transforming AI topic analysis into complete, professional lesson plans that eliminate "blank page syndrome."
+Build comprehensive lesson plan generation with instructional design framework integration, creating complete instructor-led and self-paced outputs with professional documentation. This epic delivers the core value proposition by transforming AI topic analysis into complete, professional lesson plans that eliminate "blank page syndrome."
 
 ### Story 2.1: Comprehensive Lesson Plan Generation
 
@@ -222,7 +222,7 @@ so that I can quickly create professional, evidence-based learning experiences.
 **Acceptance Criteria:**
 1. Generate lesson plans from existing topic classifications within lessons
 2. Create separate outputs for instructor-led and self-paced eLearning formats
-3. Include learning objectives aligned with Clark & Mayer content type
+3. Include learning objectives aligned with instructional design framework content type
 4. Generate appropriate assessment strategies based on content classification
 5. Provide estimated timing and pacing recommendations for each lesson component
 6. Include materials list and preparation requirements
@@ -252,7 +252,7 @@ I want automatically generated learning objectives and aligned assessments,
 so that I can ensure pedagogically sound lesson structure and measurable outcomes.
 
 **Acceptance Criteria:**
-1. Generate SMART learning objectives based on Clark & Mayer content type
+1. Generate SMART learning objectives based on instructional design framework content type
 2. Align objectives with appropriate Bloom's taxonomy levels for content type
 3. Create formative assessment options throughout lesson progression
 4. Generate summative assessment suggestions with multiple formats (quiz, practical application, project-based)
@@ -321,7 +321,7 @@ so that I can demonstrate professional expertise and provide accountability for 
 
 **Acceptance Criteria:**
 1. Generate comprehensive ID Chart documenting every design decision
-2. Include Clark & Mayer framework rationale for each content classification
+2. Include instructional design framework rationale for each content classification
 3. Document methodology choices with evidence-based justifications
 4. Track decision history and rationale changes throughout lesson development
 5. Include peer review capability for professional validation

@@ -18,7 +18,7 @@ sequenceDiagram
     
     User->>UI: Add topic content
     UI->>API: ai.analyzeTopics()
-    API->>AI: Classify using Clark & Mayer
+    API->>AI: Classify using instructional design framework
     AI->>AI: Route to GPT-5 or GPT-3.5
     AI->>API: Return classification + rationale
     API->>DB: Store analysis results

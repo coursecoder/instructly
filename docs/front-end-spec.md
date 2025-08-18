@@ -14,7 +14,7 @@ This document defines the user experience goals, information architecture, user 
 #### Usability Goals
 - **Professional Credibility:** Interface must position IDs as credible experts rather than "PowerPoint creators"
 - **Rapid Value Delivery:** Complete lesson plan generation in under 30 minutes vs. current 4-8 hours
-- **Evidence-Based Transparency:** Every AI recommendation includes visible Clark & Mayer framework justification
+- **Evidence-Based Transparency:** Every AI recommendation includes visible instructional design framework justification
 - **Enterprise Accessibility:** 90%+ automated WCAG 2.1 compliance without manual remediation
 
 #### Design Principles

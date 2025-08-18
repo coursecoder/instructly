@@ -1,6 +1,6 @@
 # Instructly - AI-Powered Instructional Design Platform
 
-Transform instructional design from craft-based practice to evidence-based profession with AI-powered Clark & Mayer framework classification.
+Transform instructional design from craft-based practice to evidence-based profession with AI-powered instructional design framework classification.
 
 ## 🚀 Quick Start
 

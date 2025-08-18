@@ -58,7 +58,7 @@ graph TB
 
 **Primary Model:** GPT-5 at $1.25/$10 per million tokens
 - Complex lesson plan generation
-- Clark & Mayer framework analysis
+- instructional design framework analysis
 - Professional documentation creation
 - Accessibility content generation
 
@@ -77,6 +77,6 @@ graph TB
 - Significantly improved content generation quality
 - Better adherence to instructional design frameworks
 - Reduced hallucinations critical for professional credibility
-- Enhanced instruction following for consistent Clark & Mayer classification
+- Enhanced instruction following for consistent instructional design framework classification
 
 This updated AI strategy improves both cost economics and content quality, strengthening our competitive position while maintaining the <30% AI cost target.

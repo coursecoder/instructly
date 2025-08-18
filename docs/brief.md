@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-An AI-powered instructional design platform that transforms how corporate training professionals create lesson plans by combining automated topic analysis, Clark & Mayer framework classification, and intelligent content generation with built-in accessibility compliance and professional validation features.
+An AI-powered instructional design platform that transforms how corporate training professionals create lesson plans by combining automated topic analysis, instructional design framework classification, and intelligent content generation with built-in accessibility compliance and professional validation features.
 
 **Primary Problem Being Solved:** 
 Instructional designers face "blank page syndrome" and rapid topic mastery challenges while lacking professional credibility tools, especially when creating content for highly technical audiences under tight deadlines (2-3 weeks typical).
@@ -52,7 +52,7 @@ The convergence of three market forces makes this problem critically urgent:
 
 An AI-powered platform that serves as the "secret weapon" for instructional designers, combining three revolutionary capabilities:
 
-1. **Intelligent Topic Analysis Engine:** AI analyzes topics using Clark & Mayer's eLearning framework to classify content type and generate appropriate instructional methods, eliminating blank page syndrome with research-backed starting points.
+1. **Intelligent Topic Analysis Engine:** AI analyzes topics using established instructional design frameworks to classify content type and generate appropriate instructional methods, eliminating blank page syndrome with research-backed starting points.
 
 2. **Professional Credibility Generator:** Creates AI-powered diagrams, interactive activities, and lesson plans that visually demonstrate instructional design expertise to stakeholders, transforming how IDs showcase their value.
 
@@ -168,7 +168,7 @@ Transform instructional design from craft-based guesswork to evidence-based prof
 
 ### Core Features (Must Have)
 
-- **AI Topic Analysis Engine:** Input topics via text and receive Clark & Mayer framework classification with explanations, generating appropriate instructional methods and content recommendations based on content type (facts, concepts, processes, procedures, principles)
+- **AI Topic Analysis Engine:** Input topics via text and receive instructional design framework classification with explanations, generating appropriate instructional methods and content recommendations based on content type (facts, concepts, processes, procedures, principles)
 
 - **Automated Lesson Plan Generation:** Create comprehensive lesson plans with separate outputs for instructor-led and self-paced eLearning formats, including learning objectives, activities, and assessment suggestions
 
@@ -209,7 +209,7 @@ Transform instructional design from craft-based guesswork to evidence-based prof
 ### Phase 2 Features
 
 **Quarter 2-3 Breakthrough Innovations:**
-- **Screenshot Input Method:** Visual analysis of existing course materials, slide decks, and documentation to instantly generate improvement recommendations and modernized lesson plans based on Clark & Mayer principles
+- **Screenshot Input Method:** Visual analysis of existing course materials, slide decks, and documentation to instantly generate improvement recommendations and modernized lesson plans based on established instructional design principles
 - **Music Composition Learning Flow:** Revolutionary engagement design applying tempo, harmony, and rhythm principles to create emotionally compelling, artistically flowing learning experiences that feel creative rather than mechanical
 - **Peer Review Network:** Professional validation system enabling instructional designers to review and collaborate on lesson design decisions, building community credibility and shared methodology standards
 

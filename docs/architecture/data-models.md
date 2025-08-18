@@ -86,11 +86,11 @@ interface Topic {
   id: string;
   content: string;
   classification: 'facts' | 'concepts' | 'processes' | 'procedures' | 'principles';
-  aiAnalysis: ClarkMayerAnalysis;
+  aiAnalysis: InstructionalDesignAnalysis;
   generatedAt: Date;
 }
 
-interface ClarkMayerAnalysis {
+interface InstructionalDesignAnalysis {
   contentType: string;
   rationale: string;
   recommendedMethods: string[];

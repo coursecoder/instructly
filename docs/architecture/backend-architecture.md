@@ -30,7 +30,7 @@ import { authMiddleware } from '@/middleware/auth';
 
 const analyzeRequestSchema = z.object({
   topics: z.array(z.string()).min(1).max(10),
-  analysisType: z.enum(['clark_mayer', 'bloom_taxonomy']).default('clark_mayer')
+  analysisType: z.enum(['instructional_design', 'bloom_taxonomy']).default('instructional_design')
 });
 
 export const runtime = 'edge';

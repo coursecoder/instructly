@@ -2,7 +2,7 @@
 
 ## Functional
 
-1. FR1: The system shall analyze topic inputs using Clark & Mayer's eLearning framework to classify content types (facts, concepts, processes, procedures, principles) and generate appropriate instructional methods
+1. FR1: The system shall analyze topic inputs using established instructional design frameworks to classify content types (facts, concepts, processes, procedures, principles) and generate appropriate instructional methods
 2. FR2: The system shall generate comprehensive lesson plans with separate outputs for instructor-led and self-paced eLearning formats, including learning objectives, activities, and assessment suggestions
 3. FR3: The system shall create engaging, hands-on activities specifically designed for technical content mastery, including step-by-step visual exercises and progressive learning sequences
 4. FR4: The system shall generate "Instructional Design Chart" documentation that records design decisions, methodology choices, and evidence supporting each instructional approach

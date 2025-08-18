@@ -9,7 +9,7 @@ export default function HomePage() {
           Welcome to Instructly
         </h1>
         <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-          AI-Powered Instructional Design Platform - Transform your lesson planning with evidence-based Clark & Mayer framework classification.
+          AI-Powered Instructional Design Platform - Transform your lesson planning with evidence-based instructional design framework classification.
         </p>
         
         <div className="space-y-4 sm:space-y-0 sm:space-x-4 sm:flex sm:justify-center">
@@ -27,7 +27,7 @@ export default function HomePage() {
               AI-Powered Analysis
             </h3>
             <p className="text-gray-600">
-              Analyze topics using Clark & Mayer framework for evidence-based instructional design.
+              Analyze topics using instructional design frameworks for evidence-based instructional design.
             </p>
           </div>
           
