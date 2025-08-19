@@ -13,7 +13,7 @@ vi.mock('@supabase/supabase-js', () => ({
           data: [
             {
               cost_usd: 0.05,
-              model_used: 'gpt-4',
+              model_used: 'gpt-5',
               operation_type: 'chat',
               created_at: '2024-01-01T00:00:00Z',
             },
@@ -36,7 +36,7 @@ vi.mock('@instructly/shared', async () => {
   const actual = await vi.importActual('@instructly/shared');
   return {
     ...actual,
-    measurePerformance: vi.fn(async (operation, maxTimeMs) => {
+    measurePerformance: vi.fn(async (operation, _maxTimeMs) => {
       const result = await operation();
       return {
         result,

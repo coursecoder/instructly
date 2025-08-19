@@ -127,3 +127,44 @@ export const authStateSchema = z.object({
   isLoading: z.boolean(),
   error: z.string().nullable(),
 });
+
+// AI Topic Analysis validation schemas
+export const instructionalDesignAnalysisSchema = z.object({
+  contentType: z.string(),
+  rationale: z.string(),
+  recommendedMethods: z.array(z.string()),
+  confidence: z.number().min(0).max(1),
+  modelUsed: z.enum(['gpt-5', 'gpt-3.5-turbo']),
+});
+
+export const topicSchema = z.object({
+  id: z.string().uuid(),
+  content: z.string(),
+  classification: z.enum(['facts', 'concepts', 'processes', 'procedures', 'principles']),
+  aiAnalysis: instructionalDesignAnalysisSchema,
+  generatedAt: z.date(),
+});
+
+export const topicAnalysisRequestSchema = z.object({
+  topics: z.array(z.string().min(1, 'Topic cannot be empty').max(1000, 'Topic too long')).min(1, 'At least one topic required').max(10, 'Maximum 10 topics allowed'),
+  analysisType: z.enum(['instructional_design', 'bloom_taxonomy', 'instructional_methods']).default('instructional_design'),
+});
+
+export const topicAnalysisResponseSchema = z.object({
+  topics: z.array(topicSchema),
+  totalCost: z.number().nonnegative(),
+  processingTime: z.number().nonnegative(),
+});
+
+export const aiUsageLogSchema = z.object({
+  id: z.string().uuid(),
+  userId: z.string().uuid(),
+  lessonId: z.string().uuid().optional(),
+  modelUsed: z.enum(['gpt-5', 'gpt-3.5-turbo']),
+  operationType: z.string(),
+  inputTokens: z.number().nonnegative(),
+  outputTokens: z.number().nonnegative(),
+  costUsd: z.number().nonnegative(),
+  processingTimeMs: z.number().nonnegative().optional(),
+  createdAt: z.date(),
+});

@@ -281,7 +281,7 @@ export class AuthService {
   /**
    * Sign out user
    */
-  async signOut(accessToken: string) {
+  async signOut(_accessToken: string) {
     const { error } = await this.supabase.auth.signOut();
     
     if (error) {

@@ -13,9 +13,11 @@ export default function HomePage() {
         </p>
         
         <div className="space-y-4 sm:space-y-0 sm:space-x-4 sm:flex sm:justify-center">
-          <Button variant="primary" size="lg">
-            Get Started
-          </Button>
+          <Link href="/analyze">
+            <Button variant="primary" size="lg">
+              Try AI Analysis
+            </Button>
+          </Link>
           <Button variant="secondary" size="lg">
             Learn More
           </Button>

@@ -100,7 +100,7 @@ Unit + Integration - Focus on unit tests for AI prompt engineering and integrati
 - **Frontend Technology:** React with TypeScript for robust accessibility support required for WCAG AA compliance, extensive component libraries for professional UI, and strong TypeScript integration for maintainable enterprise code
 - **Backend Technology:** Node.js with Express/Fastify for AI integration requirements, excellent API performance, and rapid development iteration
 - **Database Strategy:** PostgreSQL for structured lesson plan data and audit trails + Redis for caching AI responses (critical for 30% cost constraint) and user sessions
-- **AI Infrastructure:** OpenAI GPT-4 with intelligent caching, GPT-3.5 for classification tasks, aggressive caching strategy and prompt optimization to maintain <30% cost ratio
+- **AI Infrastructure:** OpenAI GPT-5 with intelligent caching, GPT-3.5-turbo for classification tasks, aggressive caching strategy and prompt optimization to maintain <30% cost ratio
 - **Hosting & Deployment:** AWS with auto-scaling for cloud-native architecture supporting 1000+ concurrent users, SOC 2 compliance requirements, and global CDN for performance
 - **Cost Control Focus:** Every technical choice optimized for sustainable unit economics given AI token constraints
 - **Enterprise Compliance:** Architecture supports SOC 2, GDPR, and accessibility audit requirements from foundation
@@ -156,7 +156,7 @@ so that I have evidence-based starting points for lesson planning.
 
 **Acceptance Criteria:**
 1. Text input interface for topic submission
-2. Integration with OpenAI GPT-4 API for content analysis
+2. Integration with OpenAI GPT-5 API for content analysis
 3. Instructional design framework classification output (facts, concepts, processes, procedures, principles)
 4. Detailed rationale explaining classification decision and methodology
 5. Recommended instructional methods based on content type

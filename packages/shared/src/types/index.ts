@@ -152,3 +152,31 @@ export interface AuthState {
   isLoading: boolean;
   error: string | null;
 }
+
+// AI Topic Analysis types
+export interface Topic {
+  id: string;
+  content: string;
+  classification: 'facts' | 'concepts' | 'processes' | 'procedures' | 'principles';
+  aiAnalysis: InstructionalDesignAnalysis;
+  generatedAt: Date;
+}
+
+export interface InstructionalDesignAnalysis {
+  contentType: string;
+  rationale: string;
+  recommendedMethods: string[];
+  confidence: number; // 0-1 score
+  modelUsed: 'gpt-5' | 'gpt-3.5-turbo';
+}
+
+export interface TopicAnalysisRequest {
+  topics: string[];
+  analysisType: 'instructional_design' | 'bloom_taxonomy' | 'instructional_methods';
+}
+
+export interface TopicAnalysisResponse {
+  topics: Topic[];
+  totalCost: number;
+  processingTime: number;
+}
