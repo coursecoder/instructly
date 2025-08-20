@@ -35,6 +35,7 @@
     "@types/supertest": "^2.0.16",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
+    "@vercel/node": "^3.0.0",
     "eslint": "^8.54.0",
     "msw": "^2.0.0",
     "msw-trpc": "^1.0.0",

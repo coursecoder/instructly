@@ -26,7 +26,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         httpBatchLink({
           url: process.env.NODE_ENV === 'development' 
             ? 'http://localhost:3001/trpc'
-            : 'https://instructly-api-czqc-iora8y4ru-coleens-projects-606beb08.vercel.app/trpc',
+            : 'https://instructly-api-czqc.vercel.app/trpc',
           headers() {
             const token = typeof window !== 'undefined' 
               ? localStorage.getItem('auth-token')

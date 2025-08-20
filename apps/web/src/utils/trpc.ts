@@ -6,7 +6,7 @@ function getBaseUrl() {
     // browser should use the API server directly
     return process.env.NODE_ENV === 'development' 
       ? 'http://localhost:3001' 
-      : 'https://instructly-api-czqc-iora8y4ru-coleens-projects-606beb08.vercel.app';
+      : 'https://instructly-api-czqc.vercel.app';
   }
   if (process.env.VERCEL_URL)
     // reference for vercel.com
