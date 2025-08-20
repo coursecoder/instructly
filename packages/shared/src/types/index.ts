@@ -45,6 +45,97 @@ export interface BrandingConfig {
   organizationName?: string;
 }
 
+// Lesson types based on Dev Notes database schema
+export interface Lesson {
+  id: string;
+  title: string;
+  description: string;
+  projectId: string;
+  topics: Topic[];
+  generatedContent?: LessonContent;
+  status: 'draft' | 'generating' | 'generated' | 'reviewed' | 'approved';
+  estimatedDuration: number; // minutes
+  deliveryFormat: 'instructor_led' | 'self_paced' | 'hybrid' | 'virtual_classroom';
+  accessibilityCompliance: AccessibilityStatus;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface LessonContent {
+  learningObjectives: string[];
+  activities: LessonActivity[];
+  assessments: Assessment[];
+  instructorNotes: string;
+  participantMaterials: string;
+  professionalDocumentation: ProfessionalDoc;
+  generationMetadata: GenerationMetadata;
+  accessibilityFeatures: AccessibilityFeature[];
+}
+
+export interface LessonActivity {
+  id: string;
+  type: 'presentation' | 'discussion' | 'exercise' | 'case_study' | 'role_play';
+  title: string;
+  description: string;
+  duration: number; // minutes
+  materials: string[];
+  instructions: string;
+}
+
+export interface Assessment {
+  id: string;
+  type: 'quiz' | 'assignment' | 'practical' | 'peer_review';
+  title: string;
+  description: string;
+  criteria: string[];
+  passingScore?: number;
+}
+
+export interface ProfessionalDoc {
+  facilitatorGuide?: string;
+  participantWorkbook?: string;
+  slideDeck?: string;
+  handouts: string[];
+}
+
+export interface GenerationMetadata {
+  modelUsed: 'gpt-5' | 'gpt-3.5-turbo';
+  generationTime: Date;
+  costUsd: number;
+  tokenCount: number;
+  version: string;
+}
+
+export interface AccessibilityStatus {
+  complianceLevel: 'A' | 'AA' | 'AAA';
+  overallScore: number; // 0-100
+  violations: AccessibilityViolation[];
+  recommendations: string[];
+  auditTrail: AuditEntry[];
+}
+
+export interface AccessibilityViolation {
+  id: string;
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  guideline: string;
+  description: string;
+  location: string;
+  remediation: string;
+}
+
+export interface AccessibilityFeature {
+  type: 'alt_text' | 'captions' | 'transcript' | 'keyboard_nav' | 'screen_reader';
+  description: string;
+  implemented: boolean;
+}
+
+export interface AuditEntry {
+  timestamp: Date;
+  action: string;
+  userId: string;
+  details: Record<string, any>;
+}
+
 // AI Usage Logging for cost tracking (NFR5)
 export interface AIUsageLog {
   id: string;

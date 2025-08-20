@@ -1,11 +1,32 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { trpc } from '../utils/trpc';
+import { createTRPCProxyClient, httpBatchLink } from '@trpc/client';
+import type { AppRouter } from '../../../api/src/trpc/routers';
 import type { 
   Topic, 
   TopicAnalysisRequest, 
   TopicAnalysisResponse 
 } from '@instructly/shared/types';
+
+// Create vanilla tRPC client for use in stores (not React hooks)
+const trpcClient = createTRPCProxyClient<AppRouter>({
+  links: [
+    httpBatchLink({
+      url: process.env.NODE_ENV === 'development' 
+        ? 'http://localhost:3001/trpc'
+        : '/api/trpc',
+      headers() {
+        const token = typeof window !== 'undefined' 
+          ? localStorage.getItem('auth-token')
+          : null;
+          
+        return token ? {
+          authorization: `Bearer ${token}`,
+        } : {};
+      },
+    }),
+  ],
+});
 
 interface AIState {
   // Analysis state
@@ -92,10 +113,14 @@ export const useAIStore = create<AIState>()(
           }
 
           // Make API call
-          const response = await trpc.ai.analyzeTopics.mutate(request);
+          const response = await trpcClient.ai.analyzeTopics.mutate(request);
           
           if (response.success && response.data) {
-            const results = response.data.topics;
+            // Convert string dates to Date objects
+            const results = response.data.topics.map(topic => ({
+              ...topic,
+              generatedAt: new Date(topic.generatedAt)
+            }));
             
             set({ 
               analysisResults: results,
@@ -109,7 +134,10 @@ export const useAIStore = create<AIState>()(
             // Update cost information
             await get().getMonthlyCost();
 
-            return response.data;
+            return {
+              ...response.data,
+              topics: results
+            };
           } else {
             throw new Error('Analysis failed');
           }
@@ -128,7 +156,7 @@ export const useAIStore = create<AIState>()(
 
       getMonthlyCost: async (): Promise<void> => {
         try {
-          const response = await trpc.ai.getMonthlyCost.query();
+          const response = await trpcClient.ai.getMonthlyCost.query();
           
           if (response.success && response.data) {
             set({
@@ -162,7 +190,7 @@ export const useAIStore = create<AIState>()(
 
       checkServiceHealth: async (): Promise<boolean> => {
         try {
-          const response = await trpc.ai.healthCheck.query();
+          const response = await trpcClient.ai.healthCheck.query();
           const isHealthy = response.success && response.data?.aiServiceAvailable === true;
           
           set({ 
@@ -211,7 +239,9 @@ export const useAIStore = create<AIState>()(
         // Limit cache size to 50 entries
         if (newCache.size > 50) {
           const firstKey = newCache.keys().next().value;
-          newCache.delete(firstKey);
+          if (firstKey) {
+            newCache.delete(firstKey);
+          }
         }
         
         set({ analysisCache: newCache });

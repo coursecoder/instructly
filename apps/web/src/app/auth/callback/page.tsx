@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useAuthStore } from '../../../stores/auth';
-import type { Database } from '../../../types/database';
 
 export default function AuthCallback() {
   const router = useRouter();
@@ -13,7 +12,7 @@ export default function AuthCallback() {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [message, setMessage] = useState('');
 
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClientComponentClient();
 
   useEffect(() => {
     const handleAuthCallback = async () => {

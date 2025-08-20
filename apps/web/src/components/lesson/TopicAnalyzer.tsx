@@ -110,7 +110,7 @@ export function TopicAnalyzer({ onAnalysisComplete, className = '' }: TopicAnaly
               disabled={isAnalyzing}
             >
               <option value="instructional_design">Instructional Design Framework</option>
-              <option value="bloom_taxonomy">Bloom's Taxonomy</option>
+              <option value="bloom_taxonomy">Bloom&apos;s Taxonomy</option>
               <option value="instructional_methods">Teaching Methods</option>
             </select>
           </div>

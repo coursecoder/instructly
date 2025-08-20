@@ -3,12 +3,13 @@ import { getAIService, resetAIService } from '../../src/services/aiService';
 import type { TopicAnalysisRequest } from '@instructly/shared/types';
 
 // Mock OpenAI
+const mockCreate = vi.fn();
 vi.mock('openai', () => {
   return {
     default: vi.fn().mockImplementation(() => ({
       chat: {
         completions: {
-          create: vi.fn()
+          create: mockCreate
         }
       }
     }))
@@ -38,7 +39,6 @@ vi.mock('@supabase/supabase-js', () => ({
 
 describe('AIService', () => {
   let aiService: any;
-  let mockOpenAI: any;
 
   beforeEach(() => {
     // Reset environment variables
@@ -49,10 +49,6 @@ describe('AIService', () => {
     // Reset service instance
     resetAIService();
     aiService = getAIService();
-    
-    // Get the mocked OpenAI instance
-    const OpenAI = require('openai').default;
-    mockOpenAI = new OpenAI();
   });
 
   afterEach(() => {
@@ -100,7 +96,7 @@ describe('AIService', () => {
         }
       };
 
-      mockOpenAI.chat.completions.create.mockResolvedValue(mockResponse);
+      mockCreate.mockResolvedValue(mockResponse);
 
       const request: TopicAnalysisRequest = {
         topics: ['Object-oriented programming concepts'],
@@ -166,7 +162,7 @@ describe('AIService', () => {
         }
       };
 
-      mockOpenAI.chat.completions.create.mockResolvedValue(mockResponse);
+      mockCreate.mockResolvedValue(mockResponse);
 
       const request: TopicAnalysisRequest = {
         topics: ['Advanced strategic framework design and analysis methodology for enterprise-level decision making'],
@@ -201,7 +197,7 @@ describe('AIService', () => {
         }
       };
 
-      mockOpenAI.chat.completions.create.mockResolvedValue(mockResponse);
+      mockCreate.mockResolvedValue(mockResponse);
 
       const request: TopicAnalysisRequest = {
         topics: ['Python syntax', 'JavaScript variables', 'SQL commands'],
@@ -233,7 +229,7 @@ describe('AIService', () => {
         }
       };
 
-      mockOpenAI.chat.completions.create.mockResolvedValue(mockResponse);
+      mockCreate.mockResolvedValue(mockResponse);
 
       const request: TopicAnalysisRequest = {
         topics: ['How to set up a development environment'],
@@ -251,7 +247,7 @@ describe('AIService', () => {
     });
 
     it('should handle OpenAI API errors gracefully', async () => {
-      mockOpenAI.chat.completions.create.mockRejectedValue(new Error('OpenAI API error'));
+      mockCreate.mockRejectedValue(new Error('OpenAI API error'));
 
       const request: TopicAnalysisRequest = {
         topics: ['Test topic'],
@@ -281,7 +277,7 @@ describe('AIService', () => {
         }
       };
 
-      mockOpenAI.chat.completions.create.mockResolvedValue(mockResponse);
+      mockCreate.mockResolvedValue(mockResponse);
 
       const request: TopicAnalysisRequest = {
         topics: ['Test concept'],

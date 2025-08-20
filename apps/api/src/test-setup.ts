@@ -31,33 +31,4 @@ vi.mock('@supabase/supabase-js', () => ({
   })),
 }));
 
-// Mock performance measurement to speed up tests
-vi.mock('@instructly/shared', async () => {
-  const actual = await vi.importActual('@instructly/shared');
-  return {
-    ...actual,
-    measurePerformance: vi.fn(async (operation, _maxTimeMs) => {
-      const result = await operation();
-      return {
-        result,
-        timeMs: 50, // Mock fast response time
-        withinLimit: true,
-      };
-    }),
-    createAppConfig: vi.fn(() => ({
-      database: {
-        url: 'postgresql://test:test@localhost:5432/test',
-        supabaseUrl: 'https://test.supabase.co',
-        supabaseAnonKey: 'test-anon-key',
-        supabaseServiceRoleKey: 'test-service-key',
-      },
-      ai: {
-        openaiApiKey: 'test-openai-key',
-      },
-      cache: {
-        redisUrl: 'redis://localhost:6379',
-      },
-      environment: 'development' as const,
-    })),
-  };
-});
+// Mock for tests - no additional shared mocking needed

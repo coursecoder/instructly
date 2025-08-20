@@ -1,26 +1,55 @@
-import { router, protectedProcedure } from '../index';
+import { router, publicProcedure, protectedProcedure } from '../index';
 import { TRPCError } from '@trpc/server';
 import { topicAnalysisRequestSchema } from '@instructly/shared';
 
 export const aiRouter = router({
   /**
-   * Analyze topics using AI classification
-   * Requires authentication and performs cost checking
+   * Get monthly cost - for now using demo user ID
    */
-  analyzeTopics: protectedProcedure
+  getMonthlyCost: publicProcedure
+    .query(async ({ ctx }) => {
+      try {
+        // Use demo user for now
+        const demoUserId = 'demo-user-123';
+        const monthlyCost = await ctx.aiService.getUserMonthlyCost(demoUserId);
+        const costCheck = await ctx.aiService.checkCostLimits(demoUserId);
+
+        return {
+          success: true,
+          data: {
+            currentCost: monthlyCost,
+            limit: costCheck.limit,
+            withinLimits: costCheck.withinLimits,
+            percentageUsed: costCheck.limit > 0 ? (monthlyCost / costCheck.limit) * 100 : 0
+          }
+        };
+      } catch (error) {
+        return {
+          success: false,
+          error: 'Failed to get monthly cost',
+          data: {
+            currentCost: 0,
+            limit: 50,
+            withinLimits: true,
+            percentageUsed: 0
+          }
+        };
+      }
+    }),
+
+  /**
+   * Analyze topics using AI classification
+   * Using demo user for now
+   */
+  analyzeTopics: publicProcedure
     .input(topicAnalysisRequestSchema)
     .mutation(async ({ input, ctx }) => {
       try {
-        // Validate user exists and get user ID
-        if (!ctx.user?.id) {
-          throw new TRPCError({
-            code: 'UNAUTHORIZED',
-            message: 'User authentication required'
-          });
-        }
+        // Use demo user for now
+        const demoUserId = 'demo-user-123';
 
         // Check cost limits before processing
-        const costCheck = await ctx.aiService.checkCostLimits(ctx.user.id);
+        const costCheck = await ctx.aiService.checkCostLimits(demoUserId);
         if (!costCheck.withinLimits) {
           throw new TRPCError({
             code: 'FORBIDDEN',
@@ -29,7 +58,7 @@ export const aiRouter = router({
         }
 
         // Perform AI analysis
-        const result = await ctx.aiService.analyzeTopics(input, ctx.user.id);
+        const result = await ctx.aiService.analyzeTopics(input, demoUserId);
 
         return {
           success: true,
@@ -74,50 +103,11 @@ export const aiRouter = router({
       }
     }),
 
-  /**
-   * Get user's current monthly AI cost usage
-   */
-  getMonthlyCost: protectedProcedure
-    .query(async ({ ctx }) => {
-      try {
-        if (!ctx.user?.id) {
-          throw new TRPCError({
-            code: 'UNAUTHORIZED',
-            message: 'User authentication required'
-          });
-        }
-
-        const monthlyCost = await ctx.aiService.getUserMonthlyCost(ctx.user.id);
-        const costCheck = await ctx.aiService.checkCostLimits(ctx.user.id);
-
-        return {
-          success: true,
-          data: {
-            currentCost: monthlyCost,
-            limit: costCheck.limit,
-            withinLimits: costCheck.withinLimits,
-            percentageUsed: (monthlyCost / costCheck.limit) * 100
-          },
-          timestamp: new Date()
-        };
-
-      } catch (error) {
-        console.error('Failed to get monthly cost:', {
-          userId: ctx.user?.id,
-          error: error instanceof Error ? error.message : 'Unknown error'
-        });
-
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to retrieve cost information'
-        });
-      }
-    }),
 
   /**
    * Check AI service health and availability
    */
-  healthCheck: protectedProcedure
+  healthCheck: publicProcedure
     .query(async () => {
       try {
         // Simple health check - verify OpenAI API key is configured

@@ -14,7 +14,13 @@ vi.mock('../../src/stores/aiStore', () => ({
 vi.mock('@heroicons/react/24/outline', () => ({
   PlusIcon: () => <div data-testid="plus-icon">+</div>,
   XMarkIcon: () => <div data-testid="x-mark-icon">×</div>,
-  PlayIcon: () => <div data-testid="play-icon">▶</div>
+  PlayIcon: () => <div data-testid="play-icon">▶</div>,
+  CheckCircleIcon: () => <div data-testid="check-circle-icon">✓</div>,
+  ExclamationCircleIcon: () => <div data-testid="exclamation-circle-icon">!</div>,
+  InformationCircleIcon: () => <div data-testid="information-circle-icon">ℹ</div>,
+  ChevronDownIcon: () => <div data-testid="chevron-down-icon">↓</div>,
+  ChevronUpIcon: () => <div data-testid="chevron-up-icon">↑</div>,
+  ExclamationTriangleIcon: () => <div data-testid="exclamation-triangle-icon">⚠</div>
 }));
 
 describe('TopicAnalyzer', () => {

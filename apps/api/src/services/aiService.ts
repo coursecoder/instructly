@@ -142,6 +142,18 @@ export class AIService {
     const model = this.selectModel(topic);
     
     try {
+      // Check if we should use mock mode (for development when API quota is exceeded)
+      const useMockMode = process.env.NODE_ENV === 'development' && 
+        (process.env.USE_MOCK_AI === 'true' || !process.env.OPENAI_API_KEY);
+      
+      if (useMockMode) {
+        console.info(`[AI Service] Using mock mode for topic analysis: "${topic.slice(0, 50)}..."`); 
+        // Generate realistic mock response
+        const mockResponse = this.generateMockAnalysis(topic);
+        const cost = MODEL_COSTS[model].input * 150 + MODEL_COSTS[model].output * 250; // Estimated tokens
+        return { ...mockResponse, cost };
+      }
+
       const completion = await this.openai.chat.completions.create({
         model: model === 'gpt-5' ? 'gpt-4o' : model, // Use GPT-4o as GPT-5 proxy
         messages: [
@@ -198,6 +210,61 @@ export class AIService {
   }
 
   /**
+   * Generate mock analysis for development/demo purposes
+   */
+  private generateMockAnalysis(topic: string): InstructionalDesignAnalysis & { classification: 'facts' | 'concepts' | 'processes' | 'procedures' | 'principles' } {
+    const lowerTopic = topic.toLowerCase();
+    
+    // Determine classification based on topic keywords
+    let classification: 'facts' | 'concepts' | 'processes' | 'procedures' | 'principles';
+    let contentType: string;
+    let rationale: string;
+    let recommendedMethods: string[];
+    let confidence: number;
+    
+    if (lowerTopic.includes('syntax') || lowerTopic.includes('command') || lowerTopic.includes('specific') || lowerTopic.includes('data')) {
+      classification = 'facts';
+      contentType = 'Specific factual information';
+      rationale = 'This topic involves specific commands, syntax, or data points that learners need to memorize and recall accurately. It represents concrete, factual information rather than abstract concepts.';
+      recommendedMethods = ['Flashcards', 'Repetitive practice', 'Reference guides', 'Mnemonics'];
+      confidence = 0.92;
+    } else if (lowerTopic.includes('concept') || lowerTopic.includes('theory') || lowerTopic.includes('principle') || lowerTopic.includes('understanding')) {
+      classification = 'concepts';
+      contentType = 'Abstract conceptual understanding';
+      rationale = 'This topic represents an abstract idea or concept that requires learners to understand underlying principles and be able to recognize and apply the concept in various contexts.';
+      recommendedMethods = ['Concept mapping', 'Examples and non-examples', 'Case studies', 'Analogies'];
+      confidence = 0.89;
+    } else if (lowerTopic.includes('process') || lowerTopic.includes('flow') || lowerTopic.includes('workflow') || lowerTopic.includes('how')) {
+      classification = 'processes';
+      contentType = 'Sequential process understanding';
+      rationale = 'This topic involves understanding a sequence of events or a systematic workflow that learners need to comprehend as a complete process rather than individual steps.';
+      recommendedMethods = ['Process diagrams', 'Flowcharts', 'Simulation', 'Sequential explanations'];
+      confidence = 0.87;
+    } else if (lowerTopic.includes('procedure') || lowerTopic.includes('step') || lowerTopic.includes('method') || lowerTopic.includes('technique')) {
+      classification = 'procedures';
+      contentType = 'Step-by-step procedural knowledge';
+      rationale = 'This topic involves specific procedures or methods that learners need to execute following precise steps in a particular sequence.';
+      recommendedMethods = ['Step-by-step tutorials', 'Hands-on practice', 'Checklists', 'Guided practice'];
+      confidence = 0.91;
+    } else {
+      classification = 'principles';
+      contentType = 'Guiding principles and best practices';
+      rationale = 'This topic involves higher-order principles or guidelines that require learners to understand when and how to apply them in various situations and contexts.';
+      recommendedMethods = ['Case-based learning', 'Problem-solving scenarios', 'Decision trees', 'Expert modeling'];
+      confidence = 0.85;
+    }
+    
+    return {
+      classification,
+      contentType,
+      rationale,
+      recommendedMethods,
+      confidence,
+      modelUsed: 'gpt-5'
+    };
+  }
+
+  /**
    * Select appropriate AI model based on topic complexity
    */
   private selectModel(topic: string): 'gpt-5' | 'gpt-3.5-turbo' {
@@ -249,7 +316,12 @@ export class AIService {
           created_at: new Date().toISOString()
         });
     } catch (error) {
-      console.error('Failed to log AI usage:', error);
+      // Enhanced error handling for missing table scenario
+      if ((error as Error).message?.includes("ai_usage_logs")) {
+        console.warn('[AI Service] ai_usage_logs table not found - skipping usage logging. Run database migrations to enable cost tracking.');
+      } else {
+        console.error('Failed to log AI usage:', error);
+      }
       // Don't throw here - logging failure shouldn't break the main operation
     }
   }
@@ -293,22 +365,32 @@ export class AIService {
    * Get user's monthly AI cost usage
    */
   async getUserMonthlyCost(userId: string): Promise<number> {
-    const startOfMonth = new Date();
-    startOfMonth.setDate(1);
-    startOfMonth.setHours(0, 0, 0, 0);
+    try {
+      const startOfMonth = new Date();
+      startOfMonth.setDate(1);
+      startOfMonth.setHours(0, 0, 0, 0);
 
-    const { data, error } = await this.supabase
-      .from('ai_usage_logs')
-      .select('cost_usd')
-      .eq('user_id', userId)
-      .gte('created_at', startOfMonth.toISOString());
+      const { data, error } = await this.supabase
+        .from('ai_usage_logs')
+        .select('cost_usd')
+        .eq('user_id', userId)
+        .gte('created_at', startOfMonth.toISOString());
 
-    if (error) {
-      console.error('Failed to get user monthly cost:', error);
+      if (error) {
+        // Enhanced error handling for missing table scenario
+        if (error.message?.includes("ai_usage_logs")) {
+          console.warn('[AI Service] ai_usage_logs table not found - returning $0. Run database migrations to enable cost tracking.');
+          return 0;
+        }
+        console.error('Failed to get user monthly cost:', error);
+        return 0;
+      }
+
+      return data?.reduce((total, log) => total + (log.cost_usd || 0), 0) || 0;
+    } catch (error) {
+      console.error('Error calculating monthly AI cost:', error);
       return 0;
     }
-
-    return data.reduce((total, log) => total + log.cost_usd, 0);
   }
 
   /**

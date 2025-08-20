@@ -1,11 +1,11 @@
 import { initTRPC, TRPCError } from '@trpc/server';
-import { CreateNextContextOptions } from '@trpc/server/adapters/next';
+import type { CreateFastifyContextOptions } from '@trpc/server/adapters/fastify';
 import { getAuthService } from '../services/auth';
 import { getAIService } from '../services/aiService';
 import { z } from 'zod';
 
-// Create context for tRPC procedures
-export async function createTRPCContext({ req }: CreateNextContextOptions) {
+// Create context for tRPC procedures (Fastify)
+export async function createContext({ req }: CreateFastifyContextOptions) {
   const authHeader = req.headers.authorization;
   let user = null;
   let session = null;
@@ -36,7 +36,7 @@ export async function createTRPCContext({ req }: CreateNextContextOptions) {
   };
 }
 
-export type Context = Awaited<ReturnType<typeof createTRPCContext>>;
+export type Context = Awaited<ReturnType<typeof createContext>>;
 
 // Initialize tRPC
 const t = initTRPC.context<Context>().create({

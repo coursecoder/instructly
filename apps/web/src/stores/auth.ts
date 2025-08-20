@@ -88,7 +88,10 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
           // If email confirmation is required, don't set user state
           if (response.emailConfirmationRequired) {
             set({ isLoading: false });
-            return response;
+            return {
+              user: response.user as AuthUser,
+              emailConfirmationRequired: true
+            };
           }
 
           // If user is immediately signed in
@@ -111,7 +114,10 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
             error: null,
           });
 
-          return response;
+          return {
+            user,
+            session: response.session
+          };
         } catch (error) {
           const errorMessage = error instanceof Error ? error.message : 'Registration failed';
           set({ isLoading: false, error: errorMessage });

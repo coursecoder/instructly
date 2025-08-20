@@ -25,7 +25,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       links: [
         httpBatchLink({
           url: process.env.NODE_ENV === 'development' 
-            ? 'http://localhost:3001/api/trpc'
+            ? 'http://localhost:3001/trpc'
             : '/api/trpc',
           headers() {
             const token = typeof window !== 'undefined' 

@@ -22,6 +22,7 @@ chmod +x scripts/dev-setup.sh
 # Copy environment template
 cp .env.example .env.local
 # Edit .env.local with your configuration
+# For complete environment variable reference, see docs/ENVIRONMENT_VARIABLES.md
 
 # Start development servers
 npm run dev

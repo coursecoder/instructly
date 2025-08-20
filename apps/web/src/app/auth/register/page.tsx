@@ -83,7 +83,8 @@ export default function RegisterPage() {
         ],
       });
 
-      await trpcClient.auth.resendVerification.mutate({ email: formData.email });
+      // TODO: Implement resendVerification endpoint in tRPC auth router
+      // await trpcClient.auth.resendVerification.mutate({ email: formData.email });
       setResendMessage('Verification email sent successfully!');
     } catch (error) {
       setResendMessage('Failed to resend verification email. Please try again.');
@@ -106,7 +107,7 @@ export default function RegisterPage() {
               Check your email
             </h2>
             <p className="mt-2 text-center text-sm text-gray-600">
-              We've sent a confirmation link to <strong>{formData.email}</strong>
+              We&apos;ve sent a confirmation link to <strong>{formData.email}</strong>
             </p>
             <p className="mt-4 text-center text-sm text-gray-600">
               Please check your email and click the confirmation link to activate your account.

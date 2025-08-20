@@ -21,8 +21,9 @@
     "@instructly/shared": "*",
     "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/supabase-js": "^2.38.5",
-    "@trpc/client": "^10.45.0",
-    "@trpc/server": "^10.45.0",
+    "@trpc/client": "^11.4.4",
+    "@trpc/server": "^11.4.4",
+    "dotenv": "^17.2.1",
     "fastify": "^4.24.3",
     "openai": "^4.67.3",
     "pino": "^8.16.2",
@@ -41,7 +42,7 @@
     "tsc-alias": "^1.8.8",
     "tsx": "^4.6.0",
     "typescript": "^5.3.3",
-    "vitest": "^3.2.4",
-    "vite": "^7.1.2"
+    "vite": "^7.1.2",
+    "vitest": "^3.2.4"
   }
 }

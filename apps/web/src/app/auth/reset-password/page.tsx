@@ -66,7 +66,7 @@ export default function ResetPasswordPage() {
               Check your email
             </h2>
             <p className="mt-2 text-center text-sm text-gray-600">
-              We've sent password reset instructions to <strong>{formData.email}</strong>
+              We&apos;ve sent password reset instructions to <strong>{formData.email}</strong>
             </p>
             <p className="mt-4 text-center text-sm text-gray-600">
               Please check your email and follow the instructions to reset your password.
@@ -102,7 +102,7 @@ export default function ResetPasswordPage() {
             Reset your password
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Enter your email address and we'll send you instructions to reset your password
+            Enter your email address and we&apos;ll send you instructions to reset your password
           </p>
         </div>
         

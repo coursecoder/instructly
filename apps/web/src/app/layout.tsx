@@ -14,9 +14,13 @@ export const metadata: Metadata = {
   keywords: 'instructional design, AI, instructional frameworks, lesson planning, accessibility, WCAG',
   authors: [{ name: 'Instructly Team' }],
   robots: 'index, follow',
-  viewport: 'width=device-width, initial-scale=1',
-  themeColor: '#3b82f6',
   manifest: '/manifest.json',
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#3b82f6',
 };
 
 export default function RootLayout({

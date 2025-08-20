@@ -66,3 +66,8 @@ export const useAppError = () => useAppStore((state) => state.error);
 
 // Actions for easier access
 export const { setUser, setSystemHealth, setLoading, setError, clearError } = useAppStore.getState();
+
+// Export domain-specific stores
+export { useProjectStore } from './projectStore';
+export { useLessonStore } from './lessonStore';
+export { useAIStore } from './aiStore';
