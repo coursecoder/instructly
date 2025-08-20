@@ -1,7 +1,7 @@
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
-import { appRouter } from '../../src/trpc/routers';
-import { getAuthService } from '../../src/services/auth-stub';
-import { getAIService } from '../../src/services/aiService';
+import { appRouter } from '../src/trpc/routers';
+import { getAuthService } from '../src/services/auth-stub';
+import { getAIService } from '../src/services/aiService';
 
 export default async function handler(req: Request) {
   return fetchRequestHandler({
