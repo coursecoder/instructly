@@ -78,7 +78,7 @@ export default function RegisterPage() {
           httpBatchLink({
             url: process.env.NODE_ENV === 'development' 
               ? 'http://localhost:3001/api/trpc'
-              : '/api/trpc',
+              : 'https://instructly-api-czqc-iora8y4ru-coleens-projects-606beb08.vercel.app/api/trpc',
           }),
         ],
       });
