@@ -1,0 +1,32 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "src/functions/**/*.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/health",
+      "dest": "/src/functions/health.ts"
+    },
+    {
+      "src": "/metrics",
+      "dest": "/src/functions/metrics.ts"
+    },
+    {
+      "src": "/api/trpc/(.*)",
+      "dest": "/src/functions/trpc/[trpc].ts"
+    },
+    {
+      "src": "/trpc/(.*)",
+      "dest": "/src/functions/trpc/[trpc].ts"
+    }
+  ],
+  "functions": {
+    "src/functions/**/*.ts": {
+      "runtime": "@vercel/node@3"
+    }
+  }
+}

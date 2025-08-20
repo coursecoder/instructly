@@ -26,13 +26,26 @@ async function buildServer() {
   try {
     // CORS configuration
     await fastify.register(cors, {
-      origin: ['http://localhost:3000', 'http://localhost:3001'],
+      origin: [
+        'http://localhost:3000', 
+        'http://localhost:3001',
+        'https://instructly-8p07tp9o6-coleens-projects-606beb08.vercel.app',
+        /\.vercel\.app$/
+      ],
       credentials: true,
     });
 
-    // Register tRPC
+    // Register tRPC at both /trpc and /api/trpc for compatibility
     await fastify.register(fastifyTRPCPlugin, {
       prefix: '/trpc',
+      trpcOptions: {
+        router: appRouter,
+        createContext,
+      },
+    });
+
+    await fastify.register(fastifyTRPCPlugin, {
+      prefix: '/api/trpc',
       trpcOptions: {
         router: appRouter,
         createContext,
