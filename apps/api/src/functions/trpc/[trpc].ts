@@ -4,12 +4,8 @@ import { getAuthService } from '../../services/auth';
 import { getAIService } from '../../services/aiService';
 
 export default async function handler(req: Request) {
-  // Determine endpoint from URL
-  const url = new URL(req.url);
-  const endpoint = url.pathname.startsWith('/api/trpc') ? '/api/trpc' : '/trpc';
-  
   return fetchRequestHandler({
-    endpoint,
+    endpoint: '/trpc',
     req,
     router: appRouter,
     createContext: async () => ({

@@ -195,11 +195,24 @@ export const topicAnalysisRequestSchema = z.object({
   analysisType: z.enum(['instructional_design', 'bloom_taxonomy', 'instructional_methods']).default('instructional_design'),
 });
 
+// Additional schemas needed by the routers (moved up for proper ordering)
+export const projectSettingsSchema = z.object({
+  brandingOptions: z.object({
+    primaryColor: z.string().optional(),
+    logoUrl: z.string().url().optional(),
+    organizationName: z.string().max(255).optional(),
+  }),
+  defaultAccessibilityLevel: z.enum(['AA', 'AAA']),
+  approvalWorkflow: z.boolean(),
+  stakeholderAccess: z.boolean(),
+});
+
 export const createProjectSchema = z.object({
   title: z.string().min(1).max(255),
   description: z.string().optional().default(''),
   targetAudience: z.string().max(500),
   estimatedDuration: z.number().positive(),
+  settings: projectSettingsSchema.optional(),
 });
 
 export const updateProjectSchema = createProjectSchema.partial().extend({
@@ -216,18 +229,6 @@ export const createLessonSchema = z.object({
 
 export const updateLessonSchema = createLessonSchema.partial().extend({
   id: z.string().uuid(),
-});
-
-// Additional schemas needed by the routers
-export const projectSettingsSchema = z.object({
-  brandingOptions: z.object({
-    primaryColor: z.string().optional(),
-    logoUrl: z.string().url().optional(),
-    organizationName: z.string().max(255).optional(),
-  }),
-  defaultAccessibilityLevel: z.enum(['AA', 'AAA']),
-  approvalWorkflow: z.boolean(),
-  stakeholderAccess: z.boolean(),
 });
 
 export const lessonSequenceUpdateSchema = z.object({

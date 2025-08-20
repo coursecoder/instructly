@@ -1,6 +1,6 @@
 import { initTRPC, TRPCError } from '@trpc/server';
 import type { CreateFastifyContextOptions } from '@trpc/server/adapters/fastify';
-import { getAuthService } from '../services/auth';
+import { getAuthService } from '../services/auth-stub';
 import { getAIService } from '../services/aiService';
 import { z } from 'zod';
 

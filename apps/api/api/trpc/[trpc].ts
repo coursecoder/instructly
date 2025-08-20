@@ -1,28 +1,18 @@
-import { VercelRequest, VercelResponse } from '@vercel/node';
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
 import { appRouter } from '../../src/trpc/routers';
-import { getAuthService } from '../../src/services/auth';
+import { getAuthService } from '../../src/services/auth-stub';
 import { getAIService } from '../../src/services/aiService';
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // Convert Vercel request to fetch request
-  const url = new URL(req.url || '', `http://${req.headers.host}`);
-  
-  const fetchRequest = new Request(url.toString(), {
-    method: req.method,
-    headers: req.headers as HeadersInit,
-    body: req.method !== 'GET' && req.method !== 'HEAD' ? JSON.stringify(req.body) : undefined,
-  });
-
-  const fetchResponse = await fetchRequestHandler({
-    endpoint: '/api/trpc',
-    req: fetchRequest,
+export default async function handler(req: Request) {
+  return fetchRequestHandler({
+    endpoint: '/trpc',
+    req,
     router: appRouter,
     createContext: async () => ({
-      req: req as any,
+      req: req as any, // Simplified for fetch adapter
       user: null,
-      session: null,
-      authService: getAuthService(),
+      session: null, 
+      authService: getAuthService() as any,
       aiService: getAIService(),
     }),
     onError:
@@ -34,14 +24,4 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           }
         : undefined,
   });
-
-  // Convert fetch response back to Vercel response
-  const body = await fetchResponse.text();
-  
-  // Set headers
-  fetchResponse.headers.forEach((value, key) => {
-    res.setHeader(key, value);
-  });
-  
-  res.status(fetchResponse.status).send(body);
 }

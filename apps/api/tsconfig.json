@@ -24,6 +24,10 @@
   "exclude": [
     "node_modules",
     "dist",
-    "src/functions/auth/**/*"
+    "src/functions/auth/**/*",
+    "src/functions/trpc/**/*",
+    "src/middleware/auth.ts",
+    "src/services/auth.ts",
+    "src/trpc/routers/auth.ts"
   ]
 }
