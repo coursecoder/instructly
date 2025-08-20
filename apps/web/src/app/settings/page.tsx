@@ -106,7 +106,9 @@ export default function SettingsPage() {
   };
 
   if (!user) {
-    router.push('/auth/login');
+    if (typeof window !== 'undefined') {
+      router.push('/auth/login');
+    }
     return null;
   }
 
