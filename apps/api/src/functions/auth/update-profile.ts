@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { authMiddleware } from '../../middleware/auth';
 import { getAuthService } from '../../services/auth';
-import { updateProfileSchema } from '../../../../../packages/shared/src/schemas';
+import { updateProfileSchema } from '../../types/shared';
 
 export const runtime = 'edge';
 

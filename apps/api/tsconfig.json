@@ -1,5 +1,4 @@
 {
-  "extends": "../../packages/config/tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
     "target": "ES2022",
@@ -11,16 +10,20 @@
     "declaration": false,
     "noEmit": false,
     "baseUrl": ".",
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "paths": {
-      "@/*": ["./src/*"],
-      "@shared/*": ["../../packages/shared/src/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "api/**/*"
   ],
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    "src/functions/auth/**/*"
   ]
 }

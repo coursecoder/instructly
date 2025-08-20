@@ -1,24 +1,18 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { VercelRequest, VercelResponse } from '@vercel/node';
 import { getAuthService } from '../../services/auth';
-import { signInSchema } from '../../../../../packages/shared/src/schemas';
+import { signInSchema } from '../../types/shared';
 
-export const runtime = 'edge';
-
-export default async function handler(req: NextRequest) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
-    return NextResponse.json(
-      { error: 'Method not allowed' },
-      { status: 405 }
-    );
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    const body = await req.json();
-    const validatedData = signInSchema.parse(body);
+    const validatedData = signInSchema.parse(req.body);
 
     const result = await getAuthService().signIn(validatedData);
 
-    return NextResponse.json({
+    return res.status(200).json({
       success: true,
       data: result,
       timestamp: new Date()
@@ -26,13 +20,10 @@ export default async function handler(req: NextRequest) {
   } catch (error) {
     console.error('Login error:', error);
     
-    return NextResponse.json(
-      {
-        success: false,
-        error: error instanceof Error ? error.message : 'Login failed',
-        timestamp: new Date()
-      },
-      { status: 401 }
-    );
+    return res.status(401).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Login failed',
+      timestamp: new Date()
+    });
   }
 }

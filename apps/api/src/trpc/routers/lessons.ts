@@ -7,7 +7,7 @@ import {
   lessonSequenceUpdateSchema,
   topicSchema,
   accessibilityStatusSchema
-} from '@instructly/shared';
+} from './../../types/shared';
 import { LessonRepository } from '../../services/lessonRepository';
 import { ProjectRepository } from '../../services/projectRepository';
 

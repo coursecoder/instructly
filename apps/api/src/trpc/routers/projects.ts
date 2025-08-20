@@ -5,7 +5,7 @@ import {
   createProjectSchema, 
   updateProjectSchema, 
   projectSettingsSchema 
-} from '@instructly/shared';
+} from './../../types/shared';
 import { ProjectRepository } from '../../services/projectRepository';
 
 // Lazy-loaded repository to ensure environment variables are loaded first

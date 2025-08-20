@@ -5,7 +5,7 @@ import {
   ProjectSettings, 
   createProjectSchema, 
   updateProjectSchema 
-} from '@instructly/shared';
+} from './../types/shared';
 
 type ProjectRow = Database['public']['Tables']['projects']['Row'];
 type ProjectInsert = Database['public']['Tables']['projects']['Insert'];

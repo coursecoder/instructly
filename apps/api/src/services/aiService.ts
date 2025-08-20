@@ -7,7 +7,7 @@ import {
   Topic, 
   TopicAnalysisResponse, 
   InstructionalDesignAnalysis
-} from '@instructly/shared';
+} from '../types/shared';
 
 // Cost tracking constants (based on OpenAI pricing)
 const MODEL_COSTS = {

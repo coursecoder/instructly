@@ -6,7 +6,7 @@ import {
   AccessibilityStatus,
   createLessonSchema, 
   updateLessonSchema 
-} from '@instructly/shared';
+} from './../types/shared';
 
 type LessonRow = Database['public']['Tables']['lessons']['Row'];
 type LessonInsert = Database['public']['Tables']['lessons']['Insert'];

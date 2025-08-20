@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAuthService } from '../../services/auth';
-import { signUpSchema } from '../../../../../packages/shared/src/schemas';
+import { signUpSchema } from '../../types/shared';
 
 export const runtime = 'edge';
 

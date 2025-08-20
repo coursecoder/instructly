@@ -1,6 +1,6 @@
 import { router, publicProcedure, protectedProcedure } from '../index';
 import { TRPCError } from '@trpc/server';
-import { topicAnalysisRequestSchema } from '@instructly/shared';
+import { topicAnalysisRequestSchema } from '../../types/shared';
 
 export const aiRouter = router({
   /**

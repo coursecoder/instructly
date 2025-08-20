@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { buildServer } from '../../src/server';
 import { FastifyInstance } from 'fastify';
-import { PERFORMANCE_REQUIREMENTS } from '@instructly/shared';
+import { PERFORMANCE_REQUIREMENTS } from './../../types/shared';
 
 describe('Performance Requirements Validation', () => {
   let app: FastifyInstance;

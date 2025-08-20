@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAuthService } from '../../services/auth';
-import { resetPasswordSchema } from '../../../../../packages/shared/src/schemas';
+import { resetPasswordSchema } from '../../types/shared';
 
 export const runtime = 'edge';
 
