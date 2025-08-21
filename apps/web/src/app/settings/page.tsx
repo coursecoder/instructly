@@ -87,7 +87,8 @@ export default function SettingsPage() {
     setMessage(null);
 
     try {
-      await trpcClient.auth.deleteAccount.mutate({ confirmEmail: deleteConfirmEmail });
+      // TODO: Fix tRPC client typing issue
+      await (trpcClient as any).auth.deleteAccount.mutate({ confirmEmail: deleteConfirmEmail });
       
       // Sign out and redirect
       await signOut();
