@@ -54,6 +54,7 @@ interface LessonManagerProps {
   onUpdateLesson?: (lessonId: string, updates: Partial<Lesson>) => void;
   onDeleteLesson?: (lessonId: string) => void;
   onReorderLessons?: (lessons: Lesson[]) => void;
+  onBulkReorderLessons?: (lessons: Lesson[], selectedLessonIds: string[]) => void;
   onEditLesson?: (lesson: Lesson) => void;
   onBulkDuplicate?: (lessonIds: string[]) => Promise<void>;
   onBulkMove?: (lessonIds: string[], targetProjectId: string) => Promise<void>;
@@ -68,11 +69,12 @@ interface SortableLessonItemProps {
   onDelete: (lessonId: string) => void;
   onAddTopics?: (lesson: Lesson) => void;
   isSelected?: boolean;
-  onToggleSelection?: (lessonId: string) => void;
+  onToggleSelection?: (lessonId: string, event?: React.MouseEvent) => void;
   isOverlay?: boolean;
+  selectedCount?: number; // For visual feedback when dragging multiple items
 }
 
-function SortableLessonItem({ lesson, onEdit, onDelete, onAddTopics, isSelected = false, onToggleSelection, isOverlay = false }: SortableLessonItemProps) {
+function SortableLessonItem({ lesson, onEdit, onDelete, onAddTopics, isSelected = false, onToggleSelection, isOverlay = false, selectedCount = 0 }: SortableLessonItemProps) {
   const {
     attributes,
     listeners,
@@ -137,8 +139,16 @@ function SortableLessonItem({ lesson, onEdit, onDelete, onAddTopics, isSelected 
       {...attributes}
       className={`bg-white border rounded-lg shadow-sm hover:shadow-md transition-all duration-200 ${
         isSelected ? 'border-indigo-300 bg-indigo-50' : 'border-gray-200'
-      } ${isOverlay ? 'rotate-3 shadow-xl' : ''}`}
+      } ${isOverlay ? 'rotate-3 shadow-xl' : ''} relative`}
     >
+      {/* Bulk drag indicator */}
+      {isOverlay && selectedCount > 1 && (
+        <div className="absolute -top-2 -right-2 z-10">
+          <div className="bg-indigo-600 text-white text-xs font-semibold rounded-full h-6 w-6 flex items-center justify-center shadow-lg">
+            {selectedCount}
+          </div>
+        </div>
+      )}
       <div className="p-4">
         <div className="flex items-start justify-between">
           <div className="flex items-start space-x-3 flex-1 min-w-0">
@@ -148,9 +158,10 @@ function SortableLessonItem({ lesson, onEdit, onDelete, onAddTopics, isSelected 
                 <input
                   type="checkbox"
                   checked={isSelected}
-                  onChange={() => onToggleSelection(lesson.id)}
+                  onChange={() => onToggleSelection?.(lesson.id)}
+                  onClick={(e) => onToggleSelection?.(lesson.id, e)}
                   className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                  aria-label={`Select lesson: ${lesson.title}`}
+                  aria-label={`Select lesson: ${lesson.title}. Hold Ctrl to toggle, Shift to select range`}
                 />
               </div>
             )}
@@ -248,6 +259,7 @@ export function LessonManager({
   onUpdateLesson,
   onDeleteLesson,
   onReorderLessons,
+  onBulkReorderLessons,
   onEditLesson,
   onBulkDuplicate,
   onBulkMove,
@@ -292,12 +304,44 @@ export function LessonManager({
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
-      const oldIndex = localLessons.findIndex((lesson) => lesson.id === active.id);
+      const draggedLessonId = active.id as string;
+      const oldIndex = localLessons.findIndex((lesson) => lesson.id === draggedLessonId);
       const newIndex = localLessons.findIndex((lesson) => lesson.id === over.id);
 
-      const reorderedLessons = arrayMove(localLessons, oldIndex, newIndex);
-      setLocalLessons(reorderedLessons);
-      onReorderLessons?.(reorderedLessons);
+      // Check if dragged lesson is part of a selection
+      const isDraggedLessonSelected = selectedLessonIds.includes(draggedLessonId);
+      const hasMultipleSelected = selectedLessonIds.length > 1;
+
+      if (isDraggedLessonSelected && hasMultipleSelected) {
+        // Bulk drag operation - maintain relative order of selected lessons
+        const selectedLessons = selectedLessonIds.map(id => 
+          localLessons.find(lesson => lesson.id === id)
+        ).filter(Boolean) as Lesson[];
+
+        // Create new array with selected lessons moved as a group
+        const unselectedLessons = localLessons.filter(lesson => 
+          !selectedLessonIds.includes(lesson.id)
+        );
+
+        // Insert selected lessons at the new position
+        const reorderedLessons = [...unselectedLessons];
+        reorderedLessons.splice(newIndex, 0, ...selectedLessons);
+
+        setLocalLessons(reorderedLessons);
+        
+        // Use bulk reorder API if available
+        if (onBulkReorderLessons) {
+          onBulkReorderLessons(reorderedLessons, selectedLessonIds);
+        } else {
+          // Fallback to regular reorder
+          onReorderLessons?.(reorderedLessons);
+        }
+      } else {
+        // Single lesson drag operation
+        const reorderedLessons = arrayMove(localLessons, oldIndex, newIndex);
+        setLocalLessons(reorderedLessons);
+        onReorderLessons?.(reorderedLessons);
+      }
     }
 
     setActiveId(null);
@@ -356,7 +400,42 @@ export function LessonManager({
     }
   };
 
-  const handleToggleSelection = (lessonId: string) => {
+  const handleToggleSelection = (lessonId: string, event?: React.MouseEvent) => {
+    const lesson = localLessons.find(l => l.id === lessonId);
+    if (!lesson) return;
+
+    // Handle keyboard shortcuts for multi-selection
+    if (event) {
+      // Ctrl+Click: Toggle individual selection
+      if (event.ctrlKey || event.metaKey) {
+        setSelectedLessonIds(prev =>
+          prev.includes(lessonId)
+            ? prev.filter(id => id !== lessonId)
+            : [...prev, lessonId]
+        );
+        return;
+      }
+
+      // Shift+Click: Select range
+      if (event.shiftKey && selectedLessonIds.length > 0) {
+        const lastSelectedId = selectedLessonIds[selectedLessonIds.length - 1];
+        const lastSelectedIndex = localLessons.findIndex(l => l.id === lastSelectedId);
+        const currentIndex = localLessons.findIndex(l => l.id === lessonId);
+        
+        if (lastSelectedIndex !== -1 && currentIndex !== -1) {
+          const start = Math.min(lastSelectedIndex, currentIndex);
+          const end = Math.max(lastSelectedIndex, currentIndex);
+          const rangeIds = localLessons.slice(start, end + 1).map(l => l.id);
+          
+          // Merge with existing selection
+          const newSelection = new Set([...selectedLessonIds, ...rangeIds]);
+          setSelectedLessonIds(Array.from(newSelection));
+          return;
+        }
+      }
+    }
+
+    // Default toggle behavior (no modifier keys)
     setSelectedLessonIds(prev =>
       prev.includes(lessonId)
         ? prev.filter(id => id !== lessonId)
@@ -477,7 +556,7 @@ export function LessonManager({
                   type="number"
                   id="lesson-duration"
                   value={newLesson.estimatedDuration}
-                  onChange={(e) => setNewLesson({ ...newLesson, estimatedDuration: parseInt(e.target.value) || 60 })}
+                  onChange={(e) => setNewLesson({ ...newLesson, estimatedDuration: parseInt(e.target.value, 10) || 60 })}
                   min="1"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 />
@@ -567,7 +646,7 @@ export function LessonManager({
                     onDelete={onDeleteLesson || (() => {})}
                     onAddTopics={handleAddTopics}
                     isSelected={selectedLessonIds.includes(lesson.id)}
-                    onToggleSelection={handleToggleSelection}
+                    onToggleSelection={(lessonId, event) => handleToggleSelection(lessonId, event)}
                   />
                 ))}
               </div>
@@ -580,6 +659,11 @@ export function LessonManager({
                   onEdit={() => {}}
                   onDelete={() => {}}
                   isOverlay
+                  selectedCount={
+                    selectedLessonIds.includes(activeLesson.id) && selectedLessonIds.length > 1 
+                      ? selectedLessonIds.length 
+                      : 0
+                  }
                 />
               ) : null}
             </DragOverlay>

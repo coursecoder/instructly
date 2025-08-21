@@ -5,6 +5,7 @@ import {
   createLessonSchema, 
   updateLessonSchema, 
   lessonSequenceUpdateSchema,
+  bulkLessonSequenceUpdateSchema,
   topicSchema,
   accessibilityStatusSchema
 } from './../../types/shared';
@@ -324,6 +325,78 @@ export const lessonsRouter = router({
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to update lesson sequence',
+        });
+      }
+    }),
+
+  /**
+   * Update lesson sequence for bulk drag-and-drop reordering
+   */
+  bulkUpdateSequence: protectedProcedure
+    .input(bulkLessonSequenceUpdateSchema)
+    .mutation(async ({ input, ctx }) => {
+      try {
+        if (!ctx.user) {
+          throw new TRPCError({
+            code: 'UNAUTHORIZED',
+            message: 'Authentication required',
+          });
+        }
+
+        // Verify user has access to the project
+        const project = await getProjectRepository().getById(input.projectId, ctx.user.id);
+        if (!project) {
+          throw new TRPCError({
+            code: 'FORBIDDEN',
+            message: 'No access to the specified project',
+          });
+        }
+
+        // Verify all lessons belong to the project and user has access to selected lessons
+        for (const lessonId of input.lessonSequence) {
+          const lesson = await getLessonRepository().getById(lessonId);
+          if (!lesson || lesson.projectId !== input.projectId) {
+            throw new TRPCError({
+              code: 'BAD_REQUEST',
+              message: `Lesson ${lessonId} does not belong to project ${input.projectId}`,
+            });
+          }
+        }
+
+        // Verify selected lessons are subset of lesson sequence
+        for (const selectedId of input.selectedLessons) {
+          if (!input.lessonSequence.includes(selectedId)) {
+            throw new TRPCError({
+              code: 'BAD_REQUEST',
+              message: `Selected lesson ${selectedId} is not in the lesson sequence`,
+            });
+          }
+        }
+
+        // Use the same update sequence method as single lesson reordering
+        // The selected lessons parameter is for frontend state management
+        // The actual reordering logic handles the full sequence
+        await getLessonRepository().updateSequence({
+          projectId: input.projectId,
+          lessonSequence: input.lessonSequence,
+        });
+
+        return {
+          success: true,
+          message: 'Bulk lesson sequence updated successfully',
+          data: {
+            updatedCount: input.selectedLessons.length,
+            totalSequence: input.lessonSequence.length,
+          },
+        };
+      } catch (error) {
+        if (error instanceof TRPCError) {
+          throw error;
+        }
+        console.error('Failed to update bulk lesson sequence:', error);
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to update bulk lesson sequence',
         });
       }
     }),

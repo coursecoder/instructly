@@ -4,15 +4,17 @@ import type { TopicAnalysisRequest } from '@instructly/shared/types';
 
 // Mock OpenAI
 const mockCreate = vi.fn();
+const mockOpenAI = {
+  chat: {
+    completions: {
+      create: mockCreate
+    }
+  }
+};
+
 vi.mock('openai', () => {
   return {
-    default: vi.fn().mockImplementation(() => ({
-      chat: {
-        completions: {
-          create: mockCreate
-        }
-      }
-    }))
+    default: vi.fn().mockImplementation(() => mockOpenAI)
   };
 });
 

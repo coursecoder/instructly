@@ -90,6 +90,7 @@ interface LessonState {
   updateLesson: (id: string, updates: Partial<Lesson>) => Promise<Lesson>;
   deleteLesson: (id: string) => Promise<void>;
   reorderLessons: (projectId: string, lessonIds: string[]) => Promise<void>;
+  bulkReorderLessons: (projectId: string, lessonIds: string[], selectedLessonIds: string[]) => Promise<void>;
   
   // Bulk operations
   bulkDuplicateLessons: (lessonIds: string[]) => Promise<void>;
@@ -369,21 +370,81 @@ export const useLessonStore = create<LessonState>()(
         }
       },
 
+      bulkReorderLessons: async (projectId, lessonIds, selectedLessonIds) => {
+        set({ isReordering: true, isBulkOperating: true, bulkOperationProgress: 0, error: null });
+        
+        try {
+          // Call the bulk update sequence API
+          const result = await trpcClient.lessons.bulkUpdateSequence.mutate({ 
+            projectId, 
+            lessonSequence: lessonIds,
+            selectedLessons: selectedLessonIds,
+          });
+          
+          set({ bulkOperationProgress: 90 });
+          
+          // Update local state to reflect new order
+          set(state => {
+            const projectLessons = state.lessonsByProject.get(projectId) || [];
+            const reorderedLessons = lessonIds.map(id => 
+              projectLessons.find(lesson => lesson.id === id)
+            ).filter(Boolean) as Lesson[];
+            
+            const newLessonsByProject = new Map(state.lessonsByProject);
+            newLessonsByProject.set(projectId, reorderedLessons);
+            
+            // Update global lessons array
+            const otherLessons = state.lessons.filter(l => l.projectId !== projectId);
+            const allLessons = [...otherLessons, ...reorderedLessons];
+            
+            return {
+              lessons: allLessons,
+              lessonsByProject: newLessonsByProject,
+              isReordering: false,
+              isBulkOperating: false,
+              bulkOperationProgress: 100,
+              error: null,
+            };
+          });
+        } catch (error) {
+          const errorMessage = error instanceof Error ? error.message : 'Failed to bulk reorder lessons';
+          set({ 
+            isReordering: false,
+            isBulkOperating: false,
+            bulkOperationProgress: 0,
+            error: errorMessage,
+          });
+          throw error;
+        }
+      },
+
       // Bulk operations
       bulkDuplicateLessons: async (lessonIds) => {
         set({ isBulkOperating: true, bulkOperationProgress: 0, error: null });
         
         try {
-          // TODO: Implement proper bulk duplicate functionality
-          // For now, throw an error as this needs proper implementation
-          throw new Error('Bulk duplicate not yet implemented');
+          const { lessons } = get();
+          const lessonsToDuplicate = lessons.filter(l => lessonIds.includes(l.id));
+          
+          set({ bulkOperationProgress: 20 });
+          
+          // Duplicate each lesson via API
+          const duplicatedLessons: Lesson[] = [];
+          for (let i = 0; i < lessonsToDuplicate.length; i++) {
+            const lesson = lessonsToDuplicate[i];
+            const response = await trpcClient.lessons.duplicate.mutate({
+              lessonId: lesson.id,
+              targetProjectId: lesson.projectId,
+              newTitle: `${lesson.title} (Copy)`,
+            });
+            duplicatedLessons.push(convertLessonDates(response.data || response));
+            set({ bulkOperationProgress: 20 + (i + 1) * (60 / lessonsToDuplicate.length) });
+          }
+          
+          set({ bulkOperationProgress: 90 });
           
           // Refresh lessons for affected projects
-          const { lessons } = get();
-          const affectedProjectIds = [...new Set(
-            lessons.filter(l => lessonIds.includes(l.id)).map(l => l.projectId)
-          )];
-          
+          const affectedProjectIds = [...new Set(lessonsToDuplicate.map(l => l.projectId))];
           for (const projectId of affectedProjectIds) {
             await get().fetchLessonsForProject(projectId);
           }
@@ -409,15 +470,25 @@ export const useLessonStore = create<LessonState>()(
         set({ isBulkOperating: true, bulkOperationProgress: 0, error: null });
         
         try {
-          // TODO: Implement proper bulk move functionality
-          // For now, throw an error as this needs proper implementation
-          throw new Error('Bulk move not yet implemented');
+          const { lessons } = get();
+          const lessonsToMove = lessons.filter(l => lessonIds.includes(l.id));
+          
+          set({ bulkOperationProgress: 20 });
+          
+          // Move each lesson via API
+          for (let i = 0; i < lessonsToMove.length; i++) {
+            const lesson = lessonsToMove[i];
+            await trpcClient.lessons.moveToProject.mutate({
+              lessonId: lesson.id,
+              targetProjectId,
+            });
+            set({ bulkOperationProgress: 20 + (i + 1) * (60 / lessonsToMove.length) });
+          }
+          
+          set({ bulkOperationProgress: 90 });
           
           // Refresh lessons for affected projects
-          const { lessons } = get();
-          const sourceProjectIds = [...new Set(
-            lessons.filter(l => lessonIds.includes(l.id)).map(l => l.projectId)
-          )];
+          const sourceProjectIds = [...new Set(lessonsToMove.map(l => l.projectId))];
           const affectedProjectIds = [...new Set([...sourceProjectIds, targetProjectId])];
           
           for (const projectId of affectedProjectIds) {
@@ -445,36 +516,34 @@ export const useLessonStore = create<LessonState>()(
         set({ isBulkOperating: true, bulkOperationProgress: 0, error: null });
         
         try {
-          // TODO: Implement proper bulk archive functionality
-          // For now, throw an error as this needs proper implementation
-          throw new Error('Bulk archive not yet implemented');
+          const { lessons } = get();
+          const lessonsToArchive = lessons.filter(l => lessonIds.includes(l.id));
           
-          // Update lessons status to archived
-          set(state => {
-            const newLessons = state.lessons.map(lesson => 
-              lessonIds.includes(lesson.id) 
-                ? { ...lesson, status: 'approved' as Lesson['status'] }
-                : lesson
-            );
-            
-            const newLessonsByProject = new Map(state.lessonsByProject);
-            for (const [projectId, projectLessons] of newLessonsByProject.entries()) {
-              const updatedProjectLessons = projectLessons.map(lesson => 
-                lessonIds.includes(lesson.id) 
-                  ? { ...lesson, status: 'approved' as Lesson['status'] }
-                  : lesson
-              );
-              newLessonsByProject.set(projectId, updatedProjectLessons);
-            }
-            
-            return {
-              lessons: newLessons,
-              lessonsByProject: newLessonsByProject,
-              isBulkOperating: false,
-              bulkOperationProgress: 100,
-              selectedLessonIds: [],
-              error: null,
-            };
+          set({ bulkOperationProgress: 20 });
+          
+          // Archive each lesson by updating status to 'archived'
+          for (let i = 0; i < lessonsToArchive.length; i++) {
+            const lesson = lessonsToArchive[i];
+            await trpcClient.lessons.update.mutate({
+              id: lesson.id,
+              status: 'archived' as const,
+            });
+            set({ bulkOperationProgress: 20 + (i + 1) * (60 / lessonsToArchive.length) });
+          }
+          
+          set({ bulkOperationProgress: 90 });
+          
+          // Refresh lessons for affected projects
+          const affectedProjectIds = [...new Set(lessonsToArchive.map(l => l.projectId))];
+          for (const projectId of affectedProjectIds) {
+            await get().fetchLessonsForProject(projectId);
+          }
+          
+          set({ 
+            isBulkOperating: false,
+            bulkOperationProgress: 100,
+            selectedLessonIds: [],
+            error: null,
           });
         } catch (error) {
           const errorMessage = error instanceof Error ? error.message : 'Failed to archive lessons';
@@ -512,9 +581,22 @@ export const useLessonStore = create<LessonState>()(
         });
         
         try {
-          // TODO: Implement proper bulk delete functionality
-          // For now, throw an error as this needs proper implementation
-          throw new Error('Bulk delete not yet implemented');
+          set({ bulkOperationProgress: 20 });
+          
+          // Delete each lesson via API
+          for (let i = 0; i < lessonIds.length; i++) {
+            const lessonId = lessonIds[i];
+            await trpcClient.lessons.delete.mutate({ id: lessonId });
+            set({ bulkOperationProgress: 20 + (i + 1) * (60 / lessonIds.length) });
+          }
+          
+          set({ bulkOperationProgress: 90 });
+          
+          // Refresh lessons for affected projects
+          const affectedProjectIds = [...new Set(originalLessons.map(l => l.projectId))];
+          for (const projectId of affectedProjectIds) {
+            await get().fetchLessonsForProject(projectId);
+          }
           
           set({ 
             isBulkOperating: false,

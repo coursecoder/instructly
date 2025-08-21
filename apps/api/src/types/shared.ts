@@ -236,6 +236,12 @@ export const lessonSequenceUpdateSchema = z.object({
   lessonSequence: z.array(z.string().uuid()),
 });
 
+export const bulkLessonSequenceUpdateSchema = z.object({
+  projectId: z.string().uuid(),
+  lessonSequence: z.array(z.string().uuid()),
+  selectedLessons: z.array(z.string().uuid()),
+});
+
 export const topicSchema = z.object({
   id: z.string().uuid(),
   content: z.string(),
