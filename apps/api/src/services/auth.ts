@@ -1,6 +1,4 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
-import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import type { Database } from '../types/database';
 
@@ -74,10 +72,13 @@ export class AuthService {
   }
 
   /**
-   * Create middleware client for request-based operations
+   * Create client for request-based operations
    */
-  createMiddlewareClient(req: NextRequest, res: NextResponse) {
-    return createMiddlewareClient<Database>({ req, res });
+  createRequestClient() {
+    return createClient<Database>(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
   }
 
   /**

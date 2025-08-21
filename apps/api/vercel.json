@@ -1,21 +1,21 @@
 {
   "version": 2,
   "functions": {
-    "trpc/[trpc].ts": {
+    "api/trpc/[trpc].ts": {
       "maxDuration": 30
     },
-    "health.ts": {
+    "api/health.ts": {
       "maxDuration": 10
     }
   },
   "routes": [
     {
       "src": "/trpc/(.*)",
-      "dest": "/trpc/$1"
+      "dest": "/api/trpc/$1"
     },
     {
       "src": "/health",
-      "dest": "/health"
+      "dest": "/api/health"
     }
   ]
 }
