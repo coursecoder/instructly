@@ -1441,6 +1441,19 @@ export declare const lessonSequenceUpdateSchema: z.ZodObject<{
     projectId: string;
     lessonSequence: string[];
 }>;
+export declare const bulkLessonSequenceUpdateSchema: z.ZodObject<{
+    projectId: z.ZodString;
+    lessonSequence: z.ZodArray<z.ZodString, "many">;
+    selectedLessons: z.ZodArray<z.ZodString, "many">;
+}, "strip", z.ZodTypeAny, {
+    projectId: string;
+    lessonSequence: string[];
+    selectedLessons: string[];
+}, {
+    projectId: string;
+    lessonSequence: string[];
+    selectedLessons: string[];
+}>;
 export declare const healthCheckResponseSchema: z.ZodObject<{
     status: z.ZodEnum<["healthy", "degraded", "unhealthy"]>;
     uptime: z.ZodNumber;

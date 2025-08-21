@@ -171,6 +171,11 @@ export const lessonSequenceUpdateSchema = z.object({
     projectId: z.string().uuid(),
     lessonSequence: z.array(z.string().uuid()),
 });
+export const bulkLessonSequenceUpdateSchema = z.object({
+    projectId: z.string().uuid(),
+    lessonSequence: z.array(z.string().uuid()),
+    selectedLessons: z.array(z.string().uuid()),
+});
 // Health check validation schemas
 export const healthCheckResponseSchema = z.object({
     status: z.enum(['healthy', 'degraded', 'unhealthy']),

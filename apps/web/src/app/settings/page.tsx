@@ -50,7 +50,8 @@ export default function SettingsPage() {
     setMessage(null);
 
     try {
-      const result = await trpcClient.auth.exportData.mutate();
+      // TODO: Fix tRPC client typing issue
+      const result = await (trpcClient as any).auth.exportData.mutate();
       setExportData(result);
       
       // Create downloadable file
