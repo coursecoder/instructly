@@ -6,6 +6,8 @@ import cors from '@fastify/cors';
 import { fastifyTRPCPlugin } from '@trpc/server/adapters/fastify';
 import { createContext } from './trpc';
 import { appRouter } from './trpc/routers';
+import { securityPlugin } from './middleware/security';
+import { env, performStartupValidation } from './config/environment';
 
 // Create Fastify instance with logging
 const fastify = Fastify({
@@ -22,8 +24,11 @@ const fastify = Fastify({
   },
 });
 
-async function buildServer() {
+export async function buildServer() {
   try {
+    // Register security middleware first
+    await fastify.register(securityPlugin);
+    
     // CORS configuration
     await fastify.register(cors, {
       origin: [
@@ -66,14 +71,27 @@ async function buildServer() {
 
 async function start() {
   try {
+    // Perform startup validation
+    fastify.log.info('Performing environment and security validation...');
+    const validationResult = await performStartupValidation();
+    
+    if (!validationResult.isValid) {
+      fastify.log.error(`Startup validation failed: ${validationResult.errors.join(', ')}`);
+      if (env.NODE_ENV === 'production') {
+        process.exit(1);
+      }
+    }
+    
+    if (validationResult.warnings.length > 0) {
+      fastify.log.warn(`Startup validation warnings: ${validationResult.warnings.join(', ')}`);
+    }
+    
     await buildServer();
     
-    const port = parseInt(process.env.API_PORT || '3001', 10);
-    const host = process.env.API_HOST || '0.0.0.0';
-    
-    await fastify.listen({ port, host });
-    fastify.log.info(`API server running at http://${host}:${port}`);
-    fastify.log.info(`tRPC endpoints available at http://${host}:${port}/trpc`);
+    await fastify.listen({ port: env.API_PORT, host: env.API_HOST });
+    fastify.log.info(`API server running at http://${env.API_HOST}:${env.API_PORT}`);
+    fastify.log.info(`tRPC endpoints available at http://${env.API_HOST}:${env.API_PORT}/trpc`);
+    fastify.log.info(`Environment: ${env.NODE_ENV}`);
   } catch (error) {
     fastify.log.error(error);
     process.exit(1);

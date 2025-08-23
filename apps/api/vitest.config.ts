@@ -21,12 +21,15 @@ export default defineConfig({
     env: {
       // Test environment variables to prevent database connection issues
       DATABASE_URL: 'postgresql://test:test@localhost:5432/test',
-      SUPABASE_URL: 'https://test.supabase.co',
-      SUPABASE_ANON_KEY: 'test-anon-key',
-      SUPABASE_SERVICE_ROLE_KEY: 'test-service-key',
-      OPENAI_API_KEY: 'test-openai-key',
+      NEXT_PUBLIC_SUPABASE_URL: 'https://test.supabase.co',
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: 'test-anon-key-very-long-string-for-testing-purposes-only',
+      SUPABASE_SERVICE_ROLE_KEY: 'test-service-key-very-long-string-for-testing-purposes-only',
+      OPENAI_API_KEY: 'sk-test-openai-key-very-long-string-for-testing-purposes-only',
       REDIS_URL: 'redis://localhost:6379',
       NODE_ENV: 'test',
+      API_PORT: '3001',
+      API_HOST: '0.0.0.0',
+      NEXT_PUBLIC_SITE_URL: 'https://test.instructly.app',
     },
   },
   resolve: {

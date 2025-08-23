@@ -469,6 +469,7 @@ export function LessonManager({
         generated: 0,
         reviewed: 0,
         approved: 0,
+        archived: 0,
         totalDuration: 0,
         totalTopics: 0,
       }

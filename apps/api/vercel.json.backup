@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "functions": {
+    "src/functions/health.ts": {
+      "maxDuration": 10
+    },
+    "src/functions/trpc/[trpc].ts": {
+      "maxDuration": 30
+    }
+  }
+}

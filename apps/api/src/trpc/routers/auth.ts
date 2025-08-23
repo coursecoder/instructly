@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { router, publicProcedure, protectedProcedure } from '../index';
 import { signUpSchema, signInSchema, resetPasswordSchema, updateProfileSchema } from '../../services/auth';
 import { TRPCError } from '@trpc/server';
+import { recordAuthAttempt, logSecurityEvent } from '../../middleware/security';
 
 export const authRouter = router({
   // Register new user
@@ -28,13 +29,23 @@ export const authRouter = router({
   login: publicProcedure
     .input(signInSchema)
     .mutation(async ({ input, ctx }) => {
+      const clientIp = ctx.req.ip || 'unknown';
+      const userAgent = ctx.req.headers['user-agent'];
+      
       try {
-        const result = await ctx.authService.signIn(input);
+        const result = await ctx.authService.signIn(input, clientIp);
+        
+        // Record successful authentication attempt
+        await recordAuthAttempt(clientIp, input.email, true, userAgent);
+        
         return {
           user: result.user,
           session: result.session
         };
       } catch (error) {
+        // Record failed authentication attempt
+        await recordAuthAttempt(clientIp, input.email, false, userAgent);
+        
         throw new TRPCError({
           code: 'UNAUTHORIZED',
           message: error instanceof Error ? error.message : 'Sign in failed',
@@ -46,8 +57,20 @@ export const authRouter = router({
   // Sign out user
   logout: protectedProcedure
     .mutation(async ({ ctx }) => {
+      const clientIp = ctx.req.ip || 'unknown';
+      const userAgent = ctx.req.headers['user-agent'];
+      
       try {
         await ctx.authService.signOut(ctx.session.access_token);
+        
+        // Log successful logout
+        await logSecurityEvent({
+          event_type: 'logout',
+          user_id: ctx.user.id,
+          ip_address: clientIp,
+          user_agent: userAgent
+        });
+        
         return { success: true };
       } catch (error) {
         throw new TRPCError({

@@ -4,15 +4,13 @@ import { topicAnalysisRequestSchema } from '../../types/shared';
 
 export const aiRouter = router({
   /**
-   * Get monthly cost - for now using demo user ID
+   * Get monthly cost for authenticated user
    */
-  getMonthlyCost: publicProcedure
+  getMonthlyCost: protectedProcedure
     .query(async ({ ctx }) => {
       try {
-        // Use demo user for now
-        const demoUserId = 'demo-user-123';
-        const monthlyCost = await ctx.aiService.getUserMonthlyCost(demoUserId);
-        const costCheck = await ctx.aiService.checkCostLimits(demoUserId);
+        const monthlyCost = await ctx.aiService.getUserMonthlyCost(ctx.user.id);
+        const costCheck = await ctx.aiService.checkCostLimits(ctx.user.id);
 
         return {
           success: true,
@@ -39,17 +37,13 @@ export const aiRouter = router({
 
   /**
    * Analyze topics using AI classification
-   * Using demo user for now
    */
-  analyzeTopics: publicProcedure
+  analyzeTopics: protectedProcedure
     .input(topicAnalysisRequestSchema)
     .mutation(async ({ input, ctx }) => {
       try {
-        // Use demo user for now
-        const demoUserId = 'demo-user-123';
-
         // Check cost limits before processing
-        const costCheck = await ctx.aiService.checkCostLimits(demoUserId);
+        const costCheck = await ctx.aiService.checkCostLimits(ctx.user.id);
         if (!costCheck.withinLimits) {
           throw new TRPCError({
             code: 'FORBIDDEN',
@@ -58,7 +52,7 @@ export const aiRouter = router({
         }
 
         // Perform AI analysis
-        const result = await ctx.aiService.analyzeTopics(input, demoUserId);
+        const result = await ctx.aiService.analyzeTopics(input, ctx.user.id);
 
         return {
           success: true,

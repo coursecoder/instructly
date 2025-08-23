@@ -1,4 +1,6 @@
+[1mnpm[22m [33mwarn[39m [94mUnknown env config "filter". This will stop working in the next major version of npm.[39m
 
 > @instructly/ui@0.1.0 build
 > tsc
 
+[1G[0K[1G[0K⠙[1G[0K

@@ -18,7 +18,15 @@
     "test:coverage": "turbo run test:coverage",
     "clean": "turbo run clean",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
-    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\""
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "db:setup": "./scripts/setup-database.sh",
+    "db:configure": "node scripts/configure-vercel-env.js",
+    "db:validate": "node scripts/validate-database.js",
+    "db:validate:local": "node scripts/validate-database.js local",
+    "db:validate:prod": "node scripts/validate-database.js production",
+    "db:deploy-env": "./scripts/deploy-env-to-vercel.sh",
+    "health:local": "curl http://localhost:3001/api/health",
+    "health:prod": "echo 'Update with your Vercel URL: curl https://your-app.vercel.app/api/health'"
   },
   "workspaces": [
     "apps/*",

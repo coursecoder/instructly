@@ -1,11 +1,11 @@
 import { router } from '../index';
-// import { authRouter } from './auth'; // Temporarily disabled for deployment
+import { authRouter } from './auth';
 import { aiRouter } from './ai';
 import { projectsRouter } from './projects';
 import { lessonsRouter } from './lessons';
 
 export const appRouter = router({
-  // auth: authRouter, // Temporarily disabled for deployment
+  auth: authRouter,
   ai: aiRouter,
   projects: projectsRouter,
   lessons: lessonsRouter,

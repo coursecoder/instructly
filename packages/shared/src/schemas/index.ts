@@ -158,7 +158,7 @@ export const lessonSchema = z.object({
   projectId: z.string().uuid(),
   topics: z.array(topicSchema),
   generatedContent: lessonContentSchema.optional(),
-  status: z.enum(['draft', 'generating', 'generated', 'reviewed', 'approved']),
+  status: z.enum(['draft', 'generating', 'generated', 'reviewed', 'approved', 'archived']),
   estimatedDuration: z.number().positive(),
   deliveryFormat: z.enum(['instructor_led', 'self_paced', 'hybrid', 'virtual_classroom']),
   accessibilityCompliance: accessibilityStatusSchema,

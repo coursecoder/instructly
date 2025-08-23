@@ -114,7 +114,7 @@ export class LessonRepository {
   async update(id: string, data: Partial<{
     title: string;
     description: string;
-    status: 'draft' | 'generating' | 'generated' | 'reviewed' | 'approved';
+    status: 'draft' | 'generating' | 'generated' | 'reviewed' | 'approved' | 'archived';
     estimatedDuration: number;
     deliveryFormat: 'instructor_led' | 'self_paced' | 'hybrid' | 'virtual_classroom';
     topics: Topic[];

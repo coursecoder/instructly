@@ -45,7 +45,7 @@ export interface Lesson {
     projectId: string;
     topics: Topic[];
     generatedContent?: LessonContent;
-    status: 'draft' | 'generating' | 'generated' | 'reviewed' | 'approved';
+    status: 'draft' | 'generating' | 'generated' | 'reviewed' | 'approved' | 'archived';
     estimatedDuration: number;
     deliveryFormat: 'instructor_led' | 'self_paced' | 'hybrid' | 'virtual_classroom';
     accessibilityCompliance: AccessibilityStatus;

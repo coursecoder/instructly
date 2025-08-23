@@ -1,6 +1,6 @@
 import { initTRPC, TRPCError } from '@trpc/server';
 import type { CreateFastifyContextOptions } from '@trpc/server/adapters/fastify';
-import { getAuthService } from '../services/auth-stub';
+import { getAuthService } from '../services/auth';
 import { getAIService } from '../services/aiService';
 import { z } from 'zod';
 
@@ -13,13 +13,31 @@ export async function createContext({ req }: CreateFastifyContextOptions) {
   if (authHeader?.startsWith('Bearer ')) {
     const token = authHeader.substring(7);
     try {
-      // TODO: Implement proper JWT token validation
-      // This is a placeholder - in production should verify JWT signature
-      if (token && token.length > 0) {
-        // For now, assume valid token means authenticated user
-        // In production, decode JWT and get user ID from token
-        user = { id: 'authenticated-user' };
-        session = { access_token: token };
+      // Use Supabase client to verify JWT token with comprehensive validation
+      const authService = getAuthService();
+      const supabaseClient = authService.createRequestClient();
+      
+      // Verify JWT token and get user
+      const { data: { user: authUser }, error } = await supabaseClient.auth.getUser(token);
+      
+      if (error || !authUser) {
+        console.error('Token validation failed:', error?.message);
+      } else {
+        // Additional validation: check token expiration
+        const { data: userSession, error: sessionError } = await supabaseClient.auth.getSession();
+        
+        if (sessionError || !userSession) {
+          console.error('Session validation failed:', sessionError?.message);
+        } else {
+          // Verify session is not expired
+          const now = Math.floor(Date.now() / 1000);
+          if (userSession.session?.expires_at && userSession.session.expires_at < now) {
+            console.error('Session expired');
+          } else {
+            user = { id: authUser.id };
+            session = { access_token: token };
+          }
+        }
       }
     } catch (error) {
       // Invalid token - user remains null

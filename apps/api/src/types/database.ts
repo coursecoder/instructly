@@ -91,7 +91,7 @@ export interface Database {
           title: string
           description: string | null
           project_id: string
-          status: 'draft' | 'generating' | 'generated' | 'reviewed' | 'approved'
+          status: 'draft' | 'generating' | 'generated' | 'reviewed' | 'approved' | 'archived'
           estimated_duration: number
           delivery_format: 'instructor_led' | 'self_paced' | 'hybrid' | 'virtual_classroom'
           topics: Json
@@ -104,7 +104,7 @@ export interface Database {
           title: string
           description?: string | null
           project_id: string
-          status: 'draft' | 'generating' | 'generated' | 'reviewed' | 'approved'
+          status: 'draft' | 'generating' | 'generated' | 'reviewed' | 'approved' | 'archived'
           estimated_duration: number
           delivery_format: 'instructor_led' | 'self_paced' | 'hybrid' | 'virtual_classroom'
           topics?: Json
@@ -117,7 +117,7 @@ export interface Database {
           title?: string
           description?: string | null
           project_id?: string
-          status?: 'draft' | 'generating' | 'generated' | 'reviewed' | 'approved'
+          status?: 'draft' | 'generating' | 'generated' | 'reviewed' | 'approved' | 'archived'
           estimated_duration?: number
           delivery_format?: 'instructor_led' | 'self_paced' | 'hybrid' | 'virtual_classroom'
           topics?: Json

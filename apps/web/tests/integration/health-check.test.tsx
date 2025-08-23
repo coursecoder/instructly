@@ -14,36 +14,42 @@ describe('Health Check Integration', () => {
   });
 
   it('should handle health check response format', async () => {
-    // Mock the expected health check response structure
+    // Mock the expected health check response structure (v2.0.0 format)
     const mockHealthResponse = {
       success: true,
       data: {
         status: 'healthy',
-        uptime: 100,
-        version: '0.1.0',
-        timestamp: new Date(),
-        database: {
-          connected: true,
-          responseTimeMs: 50,
-          activeConnections: 1,
+        version: '2.0.0',
+        timestamp: new Date().toISOString(),
+        services: {
+          database: {
+            status: 'healthy',
+            responseTime: 50,
+            connection: true,
+          },
+          openai: {
+            status: 'healthy',
+            responseTime: 20,
+            apiKey: true,
+          },
+          supabase: {
+            status: 'healthy',
+            responseTime: 30,
+            auth: true,
+          },
         },
-        memory: {
-          used: 100000,
-          total: 1000000,
-          percentage: 10,
-        },
-        performance: {
-          avgResponseTimeMs: 100,
-          activeUsers: 5,
-          requestsPerMinute: 60,
-        },
+        environment: 'development',
       },
+      timestamp: new Date().toISOString(),
     };
 
     // Validate the response structure
     expect(mockHealthResponse.success).toBe(true);
     expect(mockHealthResponse.data.status).toBe('healthy');
-    expect(mockHealthResponse.data.database.connected).toBe(true);
-    expect(mockHealthResponse.data.performance.avgResponseTimeMs).toBeLessThan(1000);
+    expect(mockHealthResponse.data.services.database.connection).toBe(true);
+    expect(mockHealthResponse.data.services.openai.apiKey).toBe(true);
+    expect(mockHealthResponse.data.services.supabase.auth).toBe(true);
+    expect(mockHealthResponse.data.environment).toBe('development');
+    expect(mockHealthResponse.data.version).toBe('2.0.0');
   });
 });

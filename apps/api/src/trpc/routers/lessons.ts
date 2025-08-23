@@ -173,7 +173,7 @@ export const lessonsRouter = router({
       id: z.string().uuid(),
       title: z.string().min(1).max(255).optional(),
       description: z.string().optional(),
-      status: z.enum(['draft', 'generating', 'generated', 'reviewed', 'approved']).optional(),
+      status: z.enum(['draft', 'generating', 'generated', 'reviewed', 'approved', 'archived']).optional(),
       estimatedDuration: z.number().positive().optional(),
       deliveryFormat: z.enum(['instructor_led', 'self_paced', 'hybrid', 'virtual_classroom']).optional(),
       topics: z.array(topicSchema).optional(),

@@ -992,7 +992,7 @@ export declare const lessonSchema: z.ZodObject<{
             implemented: boolean;
         }[];
     }>>;
-    status: z.ZodEnum<["draft", "generating", "generated", "reviewed", "approved"]>;
+    status: z.ZodEnum<["draft", "generating", "generated", "reviewed", "approved", "archived"]>;
     estimatedDuration: z.ZodNumber;
     deliveryFormat: z.ZodEnum<["instructor_led", "self_paced", "hybrid", "virtual_classroom"]>;
     accessibilityCompliance: z.ZodObject<{
@@ -1077,7 +1077,7 @@ export declare const lessonSchema: z.ZodObject<{
     createdAt: z.ZodDate;
     updatedAt: z.ZodDate;
 }, "strip", z.ZodTypeAny, {
-    status: "draft" | "generating" | "generated" | "reviewed" | "approved";
+    status: "draft" | "archived" | "generating" | "generated" | "reviewed" | "approved";
     id: string;
     createdAt: Date;
     title: string;
@@ -1159,7 +1159,7 @@ export declare const lessonSchema: z.ZodObject<{
         }[];
     } | undefined;
 }, {
-    status: "draft" | "generating" | "generated" | "reviewed" | "approved";
+    status: "draft" | "archived" | "generating" | "generated" | "reviewed" | "approved";
     id: string;
     createdAt: Date;
     title: string;
