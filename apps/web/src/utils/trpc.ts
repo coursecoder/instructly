@@ -3,10 +3,10 @@ import { httpBatchLink } from '@trpc/client';
 
 function getBaseUrl() {
   if (typeof window !== 'undefined') {
-    // browser should use the same domain for API calls in production
+    // browser should use the API server directly
     return process.env.NODE_ENV === 'development' 
       ? 'http://localhost:3001' 
-      : '';  // Empty string means same origin
+      : 'https://instructly-production.vercel.app';  // Use the main production domain
   }
   if (process.env.VERCEL_URL)
     // reference for vercel.com

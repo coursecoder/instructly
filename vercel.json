@@ -23,8 +23,19 @@
       "dest": "/apps/api/src/functions/trpc/[trpc]"
     },
     {
+      "handle": "filesystem"
+    },
+    {
       "src": "/(.*)",
       "dest": "/apps/web/$1"
     }
-  ]
+  ],
+  "functions": {
+    "apps/api/src/functions/health.ts": {
+      "maxDuration": 10
+    },
+    "apps/api/src/functions/trpc/[trpc].ts": {
+      "maxDuration": 30
+    }
+  }
 }

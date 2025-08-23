@@ -1,0 +1,20 @@
+{
+  "functions": {
+    "src/functions/health.ts": {
+      "maxDuration": 10
+    },
+    "src/functions/trpc/[trpc].ts": {
+      "maxDuration": 30
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/health",
+      "dest": "/src/functions/health"
+    },
+    {
+      "src": "/api/trpc/(.*)",
+      "dest": "/src/functions/trpc/[trpc]"
+    }
+  ]
+}
