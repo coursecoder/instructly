@@ -14,6 +14,23 @@ import type {
 const INACTIVITY_TIMEOUT = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
 const WARNING_TIMEOUT = 10 * 60 * 1000; // 10 minutes warning before logout
 
+function getBaseUrl() {
+  if (typeof window !== 'undefined') {
+    // browser should use the same domain for API calls in production
+    return process.env.NODE_ENV === 'development' 
+      ? 'http://localhost:3001' 
+      : '';  // Empty string means same origin
+  }
+  if (process.env.VERCEL_URL)
+    // reference for vercel.com
+    return `https://${process.env.VERCEL_URL}`;
+  if (process.env.RENDER_INTERNAL_HOSTNAME)
+    // reference for render.com
+    return `http://${process.env.RENDER_INTERNAL_HOSTNAME}:${process.env.PORT}`;
+  // assume localhost API server
+  return `http://localhost:3001`;
+}
+
 interface AuthState {
   user: AuthUser | null;
   isAuthenticated: boolean;
@@ -41,9 +58,7 @@ interface AuthState {
 const trpcClient = createTRPCProxyClient<AppRouter>({
   links: [
     httpBatchLink({
-      url: process.env.NODE_ENV === 'development' 
-        ? 'http://localhost:3001/api/trpc'
-        : 'https://instructly-api-czqc.vercel.app/api/trpc',
+      url: getBaseUrl() + '/api/trpc',
       headers() {
         const token = typeof window !== 'undefined' 
           ? localStorage.getItem('auth-token')

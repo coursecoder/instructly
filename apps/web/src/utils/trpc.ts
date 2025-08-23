@@ -3,10 +3,10 @@ import { httpBatchLink } from '@trpc/client';
 
 function getBaseUrl() {
   if (typeof window !== 'undefined') {
-    // browser should use the API server directly
+    // browser should use the same domain for API calls in production
     return process.env.NODE_ENV === 'development' 
       ? 'http://localhost:3001' 
-      : 'https://instructly-api-czqc.vercel.app';
+      : '';  // Empty string means same origin
   }
   if (process.env.VERCEL_URL)
     // reference for vercel.com
@@ -29,7 +29,7 @@ export const trpc = createTRPCNext<AppRouter>({
            * If you want to use SSR, you need to use the server's full URL
            * @link https://trpc.io/docs/ssr
            **/
-          url: `${getBaseUrl()}/trpc`,
+          url: `${getBaseUrl()}/api/trpc`,
           
           // You can pass any HTTP headers you wish here
           async headers() {

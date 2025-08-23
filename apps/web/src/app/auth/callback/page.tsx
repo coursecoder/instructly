@@ -35,7 +35,10 @@ function AuthCallbackComponent() {
           }
 
           if (data.user && data.session) {
-            // Update user state in Zustand store
+            // Store auth token directly
+            localStorage.setItem('auth-token', data.session.access_token);
+            
+            // Update user state in Zustand store  
             await login({
               email: data.user.email!,
               password: '' // Not needed for callback
